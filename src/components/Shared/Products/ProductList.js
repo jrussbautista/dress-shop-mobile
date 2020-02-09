@@ -67,11 +67,11 @@ const styles = StyleSheet.create({
     padding: 5
   },
   name: {
-    fontSize: 16,
+    fontSize: 15,
     height: 40
   },
   price: {
-    fontSize: 17,
+    fontSize: 16,
     color: colors.primary,
     fontWeight: "700"
   }

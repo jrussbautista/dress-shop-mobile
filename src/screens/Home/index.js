@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  StyleSheet
+} from "react-native";
 import { ProductList } from "../../components/Shared/Products";
-import styles from "./styles";
-import Categories from "./Categories";
+import Categories from "../../components/Home/Categories";
 import axios from "axios";
+import apiURL from "../../utils/apiURL";
 
 const Home = ({ navigation }) => {
   const [products, setProducts] = useState([]);
@@ -12,9 +18,7 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const { data } = await axios.get(
-          `https://dress-shop.now.sh/api/products`
-        );
+        const { data } = await axios.get(`${apiURL}/products`);
         setProducts(data.products);
         setLoading(false);
       } catch (error) {
@@ -39,3 +43,14 @@ const Home = ({ navigation }) => {
 };
 
 export default Home;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 15
+  },
+  heading: {
+    fontSize: 20,
+    fontWeight: "700",
+    textTransform: "uppercase"
+  }
+});
