@@ -18,12 +18,13 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     async function fetchProducts() {
       try {
+        console.log(`${apiURL}/products`);
         const payload = { params: { limit: 10 } };
         const { data } = await axios.get(`${apiURL}/products`, payload);
         setProducts(data.products);
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
       } finally {
         setLoading(false);
       }
