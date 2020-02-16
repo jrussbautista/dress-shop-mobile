@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   ScrollView,
   ActivityIndicator,
   StyleSheet
-} from "react-native";
-import { ProductList } from "../../components/Shared/Products";
-import Categories from "../../components/Home/Categories";
-import axios from "axios";
-import apiURL from "../../utils/apiURL";
+} from 'react-native';
+import { ProductList } from '../components/Shared/Products';
+import Categories from '../components/Home/Categories';
+import axios from 'axios';
+import apiURL from '../utils/apiURL';
 
 const Home = ({ navigation }) => {
   const [products, setProducts] = useState([]);
@@ -18,7 +18,8 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const { data } = await axios.get(`${apiURL}/products`);
+        const payload = { params: { limit: 10 } };
+        const { data } = await axios.get(`${apiURL}/products`, payload);
         setProducts(data.products);
         setLoading(false);
       } catch (error) {
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 20,
-    fontWeight: "700",
-    textTransform: "uppercase"
+    fontWeight: '700',
+    textTransform: 'uppercase'
   }
 });
