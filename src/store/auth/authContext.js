@@ -15,6 +15,30 @@ const AuthProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const getLoginUser = async () => {
+    try {
+      let userToken = await AsyncStorage.getItem('userToken');
+      if (userToken) {
+        const payload = { headers: { authorization: userToken } };
+        const { data } = await axios.get(`${apiURL}/account`, payload);
+        dispatch({
+          type: SET_USER,
+          payload: { user: data, token: userToken }
+        });
+      } else {
+        dispatch({
+          type: SET_USER,
+          payload: { user: null, token: null }
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: SET_AUTH_ERROR,
+        payload: error.response.data
+      });
+    }
+  };
+
   const login = async user => {
     try {
       const { data } = await axios.post(`${apiURL}/login`, user);
@@ -24,7 +48,6 @@ const AuthProvider = ({ children }) => {
         payload: { user: data.data, token: data.token }
       });
     } catch (error) {
-      console.log(error);
       dispatch({ type: SET_AUTH_ERROR, payload: error.response.data });
       throw error.response.data;
     }
@@ -38,7 +61,8 @@ const AuthProvider = ({ children }) => {
     () => ({
       ...state,
       login,
-      clearError
+      clearError,
+      getLoginUser
     }),
     [state]
   );

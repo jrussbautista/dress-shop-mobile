@@ -9,11 +9,11 @@ const MenuRight = () => {
   const { user } = useAuth();
 
   const handleNavigate = type => {
-    // if (user) {
-    //   navigation.navigate(type);
-    // } else {
-    navigation.navigate('Login');
-    // }
+    if (user) {
+      navigation.navigate(type);
+    } else {
+      navigation.navigate('Login');
+    }
   };
 
   return (

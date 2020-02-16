@@ -6,10 +6,11 @@ export default (state, action) => {
       return {
         ...state,
         user: action.payload.user,
-        token: action.payload.token
+        token: action.payload.token,
+        loading: false
       };
     case SET_AUTH_ERROR:
-      return { ...state, error: action.payload };
+      return { ...state, error: action.payload, loading: false };
     case CLEAR_ERROR:
       return { ...state, error: null };
     default:
