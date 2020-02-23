@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet
-} from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import axios from 'axios';
 import apiURL from '../utils/apiURL';
 import ProductInfo from '../components/Product/ProductInfo';
 import ProductAction from '../components/Product/ProductAction';
 import { ProductList } from '../components/Shared/Products';
 import { useAuth } from '../store';
+import { SkeletonProduct } from '../components/Shared/Loader';
 
 const Product = ({ navigation, route }) => {
   const { id } = route.params;
@@ -41,7 +36,7 @@ const Product = ({ navigation, route }) => {
   return (
     <ScrollView>
       {loading ? (
-        <ActivityIndicator />
+        <SkeletonProduct />
       ) : (
         <View style={styles.container}>
           <ProductInfo product={product} />

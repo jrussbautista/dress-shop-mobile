@@ -49,12 +49,24 @@ const AppNavigation = () => {
               component={Cart}
               options={() => getOptions('Cart')}
             />
-            <Stack.Screen name="Account" component={Account} />
+            <Stack.Screen
+              name="Account"
+              component={Account}
+              options={() => getOptions('Dress')}
+            />
           </>
         ) : (
-          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={() => getOptions('Dress')}
+          />
         )}
-        <Stack.Screen name="Product" component={Product} />
+        <Stack.Screen
+          name="Product"
+          component={Product}
+          options={() => getOptions('Dress')}
+        />
         <Stack.Screen name="Search" component={Search} />
       </Stack.Navigator>
     </NavigationContainer>
