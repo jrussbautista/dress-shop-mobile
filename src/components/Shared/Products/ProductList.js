@@ -1,21 +1,20 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   Text,
   Image,
   StyleSheet,
-  FlatList,
   Dimensions,
   TouchableOpacity
-} from "react-native";
-import colors from "../../../utils/colors";
-import { useNavigation } from "@react-navigation/native";
+} from 'react-native';
+import colors from '../../../utils/colors';
+import { useNavigation } from '@react-navigation/native';
 
 const ProductItem = ({ product }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Product", { id: product._id })}
+      onPress={() => navigation.navigate('Product', { id: product._id })}
       style={styles.list}
     >
       <View style={styles.imgWrapper}>
@@ -38,30 +37,33 @@ const ProductItem = ({ product }) => {
 const ProductList = ({ products }) => {
   return (
     <View style={styles.container}>
-      <FlatList
-        data={products}
-        columnWrapperStyle={{ justifyContent: "space-between" }}
-        renderItem={({ item }) => <ProductItem product={item} />}
-        keyExtractor={item => item._id}
-        numColumns={2}
-      />
+      {products.map(product => (
+        <ProductItem product={product} key={product._id} />
+      ))}
     </View>
   );
 };
 
 export default ProductList;
 
-let width = Dimensions.get("screen").width / 2;
+let width = Dimensions.get('screen').width / 2;
 
 const styles = StyleSheet.create({
-  list: { margin: 7.5, flex: 0.5 },
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    flex: 1,
+    marginVertical: 15
+  },
+  list: { width: width - 22, marginBottom: 15 },
   imgWrapper: {
-    width: width - 30,
-    height: width - 30
+    width: width - 22,
+    height: width - 22
   },
   listImg: {
-    width: width - 30,
-    height: "100%"
+    width: width - 22,
+    height: '100%'
   },
   info: {
     padding: 5
@@ -73,6 +75,6 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     color: colors.primary,
-    fontWeight: "700"
+    fontWeight: '700'
   }
 });
