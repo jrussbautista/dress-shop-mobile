@@ -1,3 +1,4 @@
 import PageLoader from './PageLoader';
+import SkeletonGrid from './SkeletonGrid';
 
-export { PageLoader };
+export { PageLoader, SkeletonGrid };

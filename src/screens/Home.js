@@ -10,6 +10,7 @@ import { ProductList } from '../components/Shared/Products';
 import Categories from '../components/Home/Categories';
 import axios from 'axios';
 import apiURL from '../utils/apiURL';
+import SkeletonGrid from '../components/Shared/Loader/SkeletonGrid';
 
 const Home = ({ navigation }) => {
   const [products, setProducts] = useState([]);
@@ -38,7 +39,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.heading}> Shop Categories </Text>
         <Categories />
         <Text style={styles.heading}> Product Overview </Text>
-        {loading ? <ActivityIndicator /> : <ProductList products={products} />}
+        {loading ? <SkeletonGrid /> : <ProductList products={products} />}
       </View>
     </ScrollView>
   );
