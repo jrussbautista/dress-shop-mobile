@@ -1,4 +1,4 @@
-import { SET_USER, SET_AUTH_ERROR, CLEAR_ERROR } from './authTypes';
+import { SET_USER, SET_AUTH_ERROR, CLEAR_ERROR, LOGOUT } from './authTypes';
 
 export default (state, action) => {
   switch (action.type) {
@@ -13,6 +13,8 @@ export default (state, action) => {
       return { ...state, error: action.payload, loading: false };
     case CLEAR_ERROR:
       return { ...state, error: null };
+    case LOGOUT:
+      return { ...state, user: null };
     default:
       return state;
   }

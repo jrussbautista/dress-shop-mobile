@@ -3,14 +3,15 @@ import { AsyncStorage } from 'react-native';
 import reducer from './authReducer';
 import axios from 'axios';
 import apiURL from '../../utils/apiURL';
-import { SET_USER, SET_AUTH_ERROR, CLEAR_ERROR } from './authTypes';
+import { SET_USER, SET_AUTH_ERROR, CLEAR_ERROR, LOGOUT } from './authTypes';
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const initialState = {
     loading: true,
-    user: null
+    user: null,
+    token: null
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -57,12 +58,18 @@ const AuthProvider = ({ children }) => {
     dispatch({ type: CLEAR_ERROR });
   };
 
+  const logout = async () => {
+    await AsyncStorage.removeItem('userToken');
+    dispatch({ type: LOGOUT });
+  };
+
   const value = useMemo(
     () => ({
       ...state,
       login,
       clearError,
-      getLoginUser
+      getLoginUser,
+      logout
     }),
     [state]
   );
