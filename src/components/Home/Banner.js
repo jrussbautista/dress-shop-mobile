@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import axios from 'axios';
 import apiURL from '../../utils/apiURL';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { SkeletonBanner } from '../Shared/Loader';
 
 const width = Dimensions.get('screen').width;
 
@@ -10,7 +11,7 @@ const Banner = () => {
   const [banners, setBanners] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
-  const carouselRef = useRef();
+  const carouselRef = useRef(null);
 
   useEffect(() => {
     const getBanners = async () => {
@@ -50,12 +51,7 @@ const Banner = () => {
           marginHorizontal: 8,
           backgroundColor: 'rgba(0, 0, 0, 0.92)'
         }}
-        inactiveDotStyle={
-          {
-            // Define styles for inactive dots here
-          }
-        }
-        tappableDots={true}
+        tappableDots={carouselRef.current ? true : false}
         inactiveDotOpacity={0.4}
         inactiveDotScale={1}
         carouselRef={carouselRef.current}
@@ -65,7 +61,9 @@ const Banner = () => {
 
   return (
     <View>
-      {!isLoading && (
+      {isLoading ? (
+        <SkeletonBanner />
+      ) : (
         <>
           <Carousel
             data={banners}
