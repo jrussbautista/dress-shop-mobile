@@ -12,6 +12,7 @@ import axios from 'axios';
 import apiURL from '../utils/apiURL';
 import SkeletonGrid from '../components/Shared/Loader/SkeletonGrid';
 import colors from '../utils/colors';
+import Banner from '../components/Home/Banner';
 
 const Home = ({ navigation }) => {
   const [products, setProducts] = useState([]);
@@ -77,6 +78,7 @@ const Home = ({ navigation }) => {
         }
       }}
     >
+      <Banner />
       <View style={styles.container}>
         <Text style={styles.heading}> Shop Categories </Text>
         <Categories />
@@ -85,6 +87,11 @@ const Home = ({ navigation }) => {
         {isAdding && (
           <View style={styles.loading}>
             <ActivityIndicator color={colors.primary} size={35} />
+          </View>
+        )}
+        {!hasLoadMore && (
+          <View style={styles.msg}>
+            <Text style={styles.msgText}> No more products to load.</Text>
           </View>
         )}
       </View>
@@ -107,5 +114,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  msg: {
+    paddingHorizontal: 10
+  },
+  msgText: {
+    fontSize: 15,
+    textAlign: 'center',
+    color: colors.primary
   }
 });
