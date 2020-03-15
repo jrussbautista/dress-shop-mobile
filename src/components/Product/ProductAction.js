@@ -8,26 +8,12 @@ import {
 } from 'react-native';
 import colors from '../../utils/colors';
 
-const ProductAction = ({ addCart }) => {
-  const [qty, setQty] = useState('1');
-
-  const handleChangeQty = action => {
-    if (action === 'add') {
-      if (qty >= 10) {
-        alert('Ops you can buy up to 10 max');
-        return;
-      }
-      setQty(qty => (parseInt(qty) + 1).toString());
-    } else {
-      if (qty > 1) setQty(qty => (parseInt(qty) - 1).toString());
-    }
-  };
-
+const ProductAction = ({ addCart, qty, handleQty }) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.qtyContainer}>
         <TouchableOpacity
-          onPress={() => handleChangeQty('add')}
+          onPress={() => handleQty('add')}
           style={[
             styles.qtyBtn,
             { borderRightWidth: 1, borderRightColor: '#d5d5d5' }
@@ -39,7 +25,7 @@ const ProductAction = ({ addCart }) => {
         </TouchableOpacity>
         <TextInput value={qty} style={styles.input} />
         <TouchableOpacity
-          onPress={() => handleChangeQty('sub')}
+          onPress={() => handleQty('sub')}
           style={[
             styles.qtyBtn,
             { borderLeftWidth: 1, borderLeftColor: '#d5d5d5' }

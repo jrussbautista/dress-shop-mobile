@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import axios from 'axios';
 import apiURL from '../utils/apiURL';
 import ProductInfo from '../components/Product/ProductInfo';
 import ProductAction from '../components/Product/ProductAction';
 import { ProductList } from '../components/Shared/Products';
-import { useAuth } from '../store';
+import { useAuth, useCart } from '../store';
 import { SkeletonProduct } from '../components/Shared/Loader';
 
 const Product = ({ navigation, route }) => {
@@ -13,10 +13,14 @@ const Product = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState('');
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [qty, setQty] = useState('1');
   const { user } = useAuth();
+  const { addCart } = useCart();
+  const pageRef = useRef();
 
   useEffect(() => {
     async function getProductInfo() {
+      setLoading(true);
       const payload = { params: { id } };
       const { data } = await axios.get(`${apiURL}/product`, payload);
       setProduct(data.product);
@@ -24,23 +28,45 @@ const Product = ({ navigation, route }) => {
       setLoading(false);
     }
     getProductInfo();
-  }, []);
+  }, [id]);
 
-  const addCart = () => {
+  // useEffect(() => {
+  //   pageRef.current.scrollTo({ x: 0, y: 0, animated: true });
+  // }, [id]);
+
+  const handleAddCart = () => {
     if (user) {
+      const cartObj = { quantity: Number(qty), product };
+      addCart(cartObj);
     } else {
       navigation.navigate('Login', { ref: product._id });
     }
   };
 
+  const handleChangeQty = action => {
+    if (action === 'add') {
+      if (qty >= 10) {
+        alert('Ops you can buy up to 10 max');
+        return;
+      }
+      setQty(qty => (parseInt(qty) + 1).toString());
+    } else {
+      if (qty > 1) setQty(qty => (parseInt(qty) - 1).toString());
+    }
+  };
+
   return (
-    <ScrollView>
+    <ScrollView ref={pageRef}>
       {loading ? (
         <SkeletonProduct />
       ) : (
         <View style={styles.container}>
           <ProductInfo product={product} />
-          <ProductAction addCart={addCart} />
+          <ProductAction
+            addCart={handleAddCart}
+            handleQty={handleChangeQty}
+            qty={qty}
+          />
           <View style={styles.heading}>
             <Text style={styles.headingText}> Related Products </Text>
           </View>
