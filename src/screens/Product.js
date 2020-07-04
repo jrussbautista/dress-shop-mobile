@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import axios from 'axios';
-import apiURL from '../utils/apiURL';
-import ProductInfo from '../components/Product/ProductInfo';
-import ProductAction from '../components/Product/ProductAction';
-import { ProductList } from '../components/Shared/Products';
-import { useAuth, useCart } from '../store';
-import { SkeletonProduct } from '../components/Shared/Loader';
+import apiURL from '~/utils/apiURL';
+import ProductInfo from '~/components/Product/ProductInfo';
+import ProductAction from '~/components/Product/ProductAction';
+import { ProductList } from '~/components/Shared/Products';
+import { useAuth, useCart, useToast } from '~/store';
+import { SkeletonProduct } from '~/components/Shared/Loader';
 
 const Product = ({ navigation, route }) => {
   const { id } = route.params;
+  const { user } = useAuth();
+  const { addCart } = useCart();
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState('');
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [qty, setQty] = useState('1');
-  const { user } = useAuth();
-  const { addCart } = useCart();
   const pageRef = useRef();
 
   useEffect(() => {
@@ -38,20 +39,21 @@ const Product = ({ navigation, route }) => {
     if (user) {
       const cartObj = { quantity: Number(qty), product };
       addCart(cartObj);
+      showToast('success', 'Successfully added to your cart');
     } else {
       navigation.navigate('Login', { ref: product._id });
     }
   };
 
-  const handleChangeQty = action => {
+  const handleChangeQty = (action) => {
     if (action === 'add') {
       if (qty >= 10) {
         alert('Ops you can buy up to 10 max');
         return;
       }
-      setQty(qty => (parseInt(qty) + 1).toString());
+      setQty((qty) => (parseInt(qty) + 1).toString());
     } else {
-      if (qty > 1) setQty(qty => (parseInt(qty) - 1).toString());
+      if (qty > 1) setQty((qty) => (parseInt(qty) - 1).toString());
     }
   };
 
@@ -81,13 +83,13 @@ export default Product;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   heading: {
-    paddingVertical: 15
+    paddingVertical: 15,
   },
   headingText: {
     fontSize: 18,
-    fontWeight: '700'
-  }
+    fontWeight: '700',
+  },
 });

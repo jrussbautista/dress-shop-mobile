@@ -4,12 +4,12 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import { Formik, ErrorMessage } from 'formik';
-import colors from '../utils/colors';
-import { useAuth } from '../store';
-import { PageLoader } from '../components/Shared/Loader';
+import colors from '~/utils/colors';
+import { useAuth } from '~/store';
+import { PageLoader } from '~/components/Shared/Loader';
 import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
 
@@ -22,7 +22,7 @@ const Login = () => {
     return () => clearError();
   }, []);
 
-  const handleLogin = async values => {
+  const handleLogin = async (values) => {
     try {
       setSubmit(true);
       await login(values);
@@ -38,9 +38,7 @@ const Login = () => {
     password: Yup.string()
       .min(6, 'Password is too Short!')
       .required('Password is Required'),
-    email: Yup.string()
-      .email('Invalid email')
-      .required('Email is Required')
+    email: Yup.string().email('Invalid email').required('Email is Required'),
   });
 
   return (
@@ -55,7 +53,7 @@ const Login = () => {
       <Formik
         validationSchema={LoginSchema}
         initialValues={{ email: '', password: '' }}
-        onSubmit={async values => handleLogin(values)}
+        onSubmit={async (values) => handleLogin(values)}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <>
@@ -67,7 +65,7 @@ const Login = () => {
                 value={values.email}
               />
               <ErrorMessage name="email">
-                {msg => (
+                {(msg) => (
                   <View style={styles.errorContainer}>
                     <Text style={styles.error}>{msg}</Text>
                   </View>
@@ -83,7 +81,7 @@ const Login = () => {
                 value={values.password}
               />
               <ErrorMessage name="password">
-                {msg => (
+                {(msg) => (
                   <View style={styles.errorContainer}>
                     <Text style={styles.error}>{msg}</Text>
                   </View>
@@ -106,41 +104,41 @@ export default Login;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
+    padding: 20,
   },
   pageTitle: {
-    fontSize: 20
+    fontSize: 20,
   },
   group: {
-    marginVertical: 10
+    marginVertical: 10,
   },
   input: {
     height: 50,
     borderColor: colors.dark,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   btn: {
     backgroundColor: colors.dark,
     height: 50,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   btnText: {
     fontSize: 20,
-    color: '#fff'
+    color: '#fff',
   },
   alert: {
-    paddingVertical: 15
+    paddingVertical: 15,
   },
   alertText: {
     color: 'red',
-    fontSize: 18
+    fontSize: 18,
   },
   errorContainer: {
-    paddingTop: 5
+    paddingTop: 5,
   },
   error: {
     color: 'red',
-    fontSize: 15
-  }
+    fontSize: 15,
+  },
 });

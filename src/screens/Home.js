@@ -4,15 +4,15 @@ import {
   Text,
   ScrollView,
   ActivityIndicator,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
-import { ProductList } from '../components/Shared/Products';
-import Categories from '../components/Home/Categories';
+import { ProductList } from '~/components/Shared/Products';
+import Categories from '~/components/Home/Categories';
 import axios from 'axios';
-import apiURL from '../utils/apiURL';
-import SkeletonGrid from '../components/Shared/Loader/SkeletonGrid';
-import colors from '../utils/colors';
-import Banner from '../components/Home/Banner';
+import apiURL from '~/utils/apiURL';
+import SkeletonGrid from '~/components/Shared/Loader/SkeletonGrid';
+import colors from '~/utils/colors';
+import Banner from '~/components/Home/Banner';
 
 const Home = ({ navigation }) => {
   const [products, setProducts] = useState([]);
@@ -54,7 +54,7 @@ const Home = ({ navigation }) => {
   const isCloseToBottom = ({
     layoutMeasurement,
     contentOffset,
-    contentSize
+    contentSize,
   }) => {
     const paddingToBottom = 20;
     return (
@@ -65,7 +65,7 @@ const Home = ({ navigation }) => {
 
   const loadMore = () => {
     if (hasLoadMore) {
-      setPage(page => page + 1);
+      setPage((page) => page + 1);
       setIsAdding(true);
     }
   };
@@ -103,24 +103,24 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15
+    padding: 15,
   },
   heading: {
     fontSize: 20,
     fontWeight: '700',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   loading: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   msg: {
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   msgText: {
     fontSize: 15,
     textAlign: 'center',
-    color: colors.primary
-  }
+    color: colors.primary,
+  },
 });
