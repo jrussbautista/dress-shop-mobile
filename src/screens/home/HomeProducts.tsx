@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { ProductService } from '@/services/productService';
+import { ProductService } from '@/services';
 import { Products } from '@/types';
 import { ProductList, Heading } from '@/components';
 
@@ -46,6 +46,6 @@ export default HomeProducts;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    paddingHorizontal: 15,
   },
 });

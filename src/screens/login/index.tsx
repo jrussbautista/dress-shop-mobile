@@ -6,7 +6,7 @@ import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { PageLoader, Button } from '@/components';
 import { colors } from '@/theme';
-import { AuthService } from '@/services/authService';
+import { AuthService } from '@/services';
 import { useAuth } from '@/store';
 
 export const LoginScreen = () => {
