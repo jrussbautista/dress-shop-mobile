@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Category } from '@/types';
 import { CategoryService } from '@/services';
+import HomeCategoriesSkeleton from './HomeCategoriesSkeleton';
 
 const HomeCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -25,7 +26,7 @@ const HomeCategories = () => {
   }, []);
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <HomeCategoriesSkeleton />;
   }
 
   return (

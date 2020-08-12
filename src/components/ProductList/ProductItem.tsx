@@ -10,6 +10,7 @@ import {
 import { Product } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '@/theme';
+import navigationNames from '@/navigation/navigationNames';
 
 interface Props {
   product: Product;
@@ -20,7 +21,11 @@ const ProductItem: React.FC<Props> = ({ product }) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Product', { id: product._id })}
+      onPress={() =>
+        navigation.navigate(navigationNames.productHomeScreenTab, {
+          id: product._id,
+        })
+      }
       style={styles.list}
     >
       <Image source={{ uri: product.imageURL }} style={styles.listImg} />

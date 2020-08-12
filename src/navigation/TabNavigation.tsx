@@ -1,4 +1,10 @@
-import { HomeScreen, SearchScreen, ProfileScreen, CartScreen } from '@/screens';
+import {
+  HomeScreen,
+  SearchScreen,
+  ProfileScreen,
+  CartScreen,
+  ProductScreen,
+} from '@/screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
@@ -15,8 +21,10 @@ const HomeStackScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Search" component={SearchScreen} />
-      <Stack.Screen name="ProfileScreen" component={HomeScreen} />
+      <Stack.Screen
+        name={navigationNames.productHomeScreenTab}
+        component={ProductScreen}
+      />
     </Stack.Navigator>
   );
 };
