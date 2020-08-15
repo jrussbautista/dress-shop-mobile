@@ -20,11 +20,10 @@ export const AppNavigation = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator mode="modal" screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name={navigationNames.rootScreen}
           component={HomeTabNavigator}
-          options={{ title: 'Dress' }}
         />
         <Stack.Screen
           name={navigationNames.rootAuthScreen}
