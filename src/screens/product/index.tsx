@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  ScrollView,
   Animated,
   StyleSheet,
   Share,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { ProductService } from '@/services';
@@ -12,9 +12,8 @@ import { Product, Products } from '@/types';
 import ProductInfo from './ProductInfo';
 import ProductSkeleton from './ProductSkeleton';
 import ProductRelated from './ProductRelated';
-import ProductAction from './ProductAction';
-import { colors } from '@/theme';
 import { Ionicons } from '@expo/vector-icons';
+import { InputQuantity, Button } from '@/components';
 
 export const ProductScreen = () => {
   const route = useRoute();
@@ -25,6 +24,7 @@ export const ProductScreen = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Products>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [qty, setQty] = useState('1');
 
   const animation = new Animated.Value(0);
   const opacity = animation.interpolate({
@@ -58,20 +58,19 @@ export const ProductScreen = () => {
     ),
   });
 
-  const fetchProduct = async () => {
-    try {
-      setIsLoading(true);
-      const results = await ProductService.getProduct(productId);
-      setProduct(results.product);
-      setRelatedProducts(results.relatedProducts);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setIsLoading(true);
+        const results = await ProductService.getProduct(productId);
+        setProduct(results.product);
+        setRelatedProducts(results.relatedProducts);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     fetchProduct();
   }, [productId]);
 
@@ -88,7 +87,10 @@ export const ProductScreen = () => {
       )}
     >
       <ProductInfo product={product} />
-      <ProductAction />
+      <View style={styles.productAction}>
+        <InputQuantity value={qty} />
+        <Button title="Add to Cart" type="primary" style={styles.btnAddCart} />
+      </View>
       <ProductRelated products={relatedProducts} />
     </Animated.ScrollView>
   );
@@ -100,5 +102,14 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     paddingHorizontal: 15,
+  },
+  productAction: {
+    paddingHorizontal: 15,
+    flexDirection: 'row',
+  },
+  btnAddCart: {
+    marginHorizontal: 10,
+    borderRadius: 50,
+    width: 150,
   },
 });
