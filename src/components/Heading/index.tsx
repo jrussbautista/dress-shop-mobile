@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 
 interface Props {
   title: string;
+  style?: ViewStyle;
 }
 
-export const Heading: React.FC<Props> = ({ title }) => {
+export const Heading: React.FC<Props> = ({ title, style }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Text style={styles.text}>{title}</Text>
     </View>
   );

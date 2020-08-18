@@ -24,7 +24,7 @@ export const ProductScreen = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Products>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [qty, setQty] = useState('1');
+  const [qty, setQty] = useState(1);
 
   const animation = new Animated.Value(0);
   const opacity = animation.interpolate({
@@ -74,6 +74,25 @@ export const ProductScreen = () => {
     fetchProduct();
   }, [productId]);
 
+  const handleButtonClickQty = (method: string) => {
+    if (method === 'add') {
+      if (qty === 10) {
+        // show error max 10 qty only
+        console.log('10 qty max');
+        return;
+      }
+      setQty((qty) => qty + 1);
+    } else if (method === 'sub') {
+      if (qty > 1) {
+        setQty((qty) => qty - 1);
+      }
+    }
+  };
+
+  const handleChangeQty = (value: number) => {
+    setQty(value);
+  };
+
   if (isLoading || !product) {
     return <ProductSkeleton />;
   }
@@ -88,7 +107,11 @@ export const ProductScreen = () => {
     >
       <ProductInfo product={product} />
       <View style={styles.productAction}>
-        <InputQuantity value={qty} />
+        <InputQuantity
+          value={qty}
+          handleButtonPressed={handleButtonClickQty}
+          onChangeText={handleChangeQty}
+        />
         <Button title="Add to Cart" type="primary" style={styles.btnAddCart} />
       </View>
       <ProductRelated products={relatedProducts} />

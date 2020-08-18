@@ -26,8 +26,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     flex: 1,
-    marginVertical: 15,
-    paddingHorizontal: 15,
   },
   list: { width: width, marginBottom: 15 },
   imgWrapper: {

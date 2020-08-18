@@ -9,10 +9,20 @@ import {
 import { colors } from '@/theme';
 
 interface Props {
-  value: string;
+  value: number;
+  onChangeText(value: number): void;
+  handleButtonPressed(val: string): void;
 }
 
-export const InputQuantity: React.FC<Props> = ({ value }) => {
+export const InputQuantity: React.FC<Props> = ({
+  value,
+  onChangeText,
+  handleButtonPressed,
+}) => {
+  const handleChangeText = (val: string) => {
+    onChangeText(Number(val));
+  };
+
   return (
     <View style={styles.qtyContainer}>
       <TouchableOpacity
@@ -20,17 +30,24 @@ export const InputQuantity: React.FC<Props> = ({ value }) => {
           styles.qtyBtn,
           { borderRightWidth: 1, borderRightColor: '#d5d5d5' },
         ]}
+        onPress={() => handleButtonPressed('add')}
       >
         <View>
           <Text> + </Text>
         </View>
       </TouchableOpacity>
-      <TextInput value={value} style={styles.input} />
+      <TextInput
+        keyboardType="numeric"
+        value={String(value)}
+        style={styles.input}
+        onChangeText={handleChangeText}
+      />
       <TouchableOpacity
         style={[
           styles.qtyBtn,
           { borderLeftWidth: 1, borderLeftColor: '#d5d5d5' },
         ]}
+        onPress={() => handleButtonPressed('sub')}
       >
         <View>
           <Text> - </Text>

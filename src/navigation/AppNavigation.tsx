@@ -7,7 +7,7 @@ import navigationNames from './navigationNames';
 import HomeTabNavigator from './TabNavigation';
 import AuthNavigation from './AuthNavigation';
 import { useAuth } from '@/store';
-import { AuthLoadingScreen, ProductScreen } from '@/screens';
+import { AuthLoadingScreen } from '@/screens';
 
 const Stack = createStackNavigator();
 
