@@ -12,13 +12,14 @@ interface ProductData {
   relatedProducts: Product[];
 }
 
-type ProductPayload = { params: unknown };
+type ProductPayload = any;
 
-const getProducts = async (payload?: ProductPayload): Promise<ProductsData> => {
+const getProducts = async (params?: ProductPayload): Promise<ProductsData> => {
   try {
     const url = `/products`;
+    const payload = { params };
+    console.log(payload);
     const { data } = await apiClient.get(url, payload);
-
     const productsData: ProductsData = {
       products: data.data.products,
       total: data.data.total,

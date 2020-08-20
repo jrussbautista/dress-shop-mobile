@@ -1,15 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl, View, StyleSheet } from 'react-native';
+import {
+  ScrollView,
+  RefreshControl,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Text,
+} from 'react-native';
 import { ProductService } from '@/services';
 import HomeCategories from './HomeCategories';
 import HomeBanners from './HomeBanners';
 import { Products } from '@/types';
 import { ProductList, ProductListSkeleton, Heading } from '@/components';
+import { colors } from '@/theme';
+import { PAGE_LIMIT } from '@/constants';
+
+const SPINNER_SIZE = 35;
 
 export const HomeScreen = () => {
   const [products, setProducts] = useState<Products>([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [hasLoadMore, setHasLoadMore] = useState(true);
 
   useEffect(() => {
     fetchProducts();
@@ -18,7 +34,11 @@ export const HomeScreen = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const results = await ProductService.getProducts();
+      const payload = {
+        page,
+        limit: PAGE_LIMIT,
+      };
+      const results = await ProductService.getProducts(payload);
       setProducts(results.products);
     } catch (error) {
       console.log(error.message);
@@ -27,10 +47,53 @@ export const HomeScreen = () => {
     }
   };
 
+  const loadMoreProducts = async () => {
+    try {
+      if (!hasLoadMore) {
+        return;
+      }
+      setIsLoadingMore(true);
+      setPage((page) => page + 1);
+      const payload = { page: page + 1, limit: PAGE_LIMIT };
+      const results = await ProductService.getProducts(payload);
+      const total = results.total;
+      const newProducts = results.products;
+      const isLoadMore = total <= newProducts.length;
+      setProducts([...products, ...newProducts]);
+      setHasLoadMore(isLoadMore);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
+
   const handleRefresh = async () => {
+    setHasLoadMore(true);
+    setPage(1);
     setRefreshing(true);
     await fetchProducts();
     setRefreshing(false);
+  };
+
+  const isReachedEnd = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }: NativeScrollEvent) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
+
+  const handleOnScroll = ({
+    nativeEvent,
+  }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (isReachedEnd(nativeEvent)) {
+      loadMoreProducts();
+    }
   };
 
   const productList = loading ? (
@@ -39,17 +102,32 @@ export const HomeScreen = () => {
     <ProductList products={products} />
   );
 
+  const spinnerElement = isLoadingMore ? (
+    <View style={styles.loading}>
+      <ActivityIndicator color={colors.primary} size={SPINNER_SIZE} />
+    </View>
+  ) : null;
+
+  const reachedEndElement = !hasLoadMore ? (
+    <View style={styles.msg}>
+      <Text style={styles.msgText}> No more products to load.</Text>
+    </View>
+  ) : null;
+
   return (
     <ScrollView
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
       }
+      onScroll={handleOnScroll}
     >
       <HomeBanners />
       <HomeCategories />
       <View style={styles.productOverview}>
         <Heading title="Product Overview" />
         {productList}
+        {spinnerElement}
+        {reachedEndElement}
       </View>
     </ScrollView>
   );
@@ -58,5 +136,19 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   productOverview: {
     paddingHorizontal: 15,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  msg: {
+    padding: 10,
+  },
+  msgText: {
+    fontSize: 15,
+    textAlign: 'center',
+    color: colors.primary,
   },
 });

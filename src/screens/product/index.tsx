@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { ProductService } from '@/services';
 import { Product, Products } from '@/types';
 import ProductInfo from './ProductInfo';
@@ -15,8 +15,12 @@ import ProductRelated from './ProductRelated';
 import { Ionicons } from '@expo/vector-icons';
 import { InputQuantity, Button } from '@/components';
 
+interface RouteParams {
+  id: string;
+}
+
 export const ProductScreen = () => {
-  const route = useRoute();
+  const route = useRoute<RouteProp<Record<string, RouteParams>, string>>();
   const navigation = useNavigation();
 
   const productId = route.params.id;
