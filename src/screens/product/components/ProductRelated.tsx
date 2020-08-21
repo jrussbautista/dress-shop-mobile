@@ -7,7 +7,7 @@ interface Props {
   products: Products;
 }
 
-const ProductRelated: React.FC<Props> = ({ products }) => {
+export const ProductRelated: React.FC<Props> = ({ products }) => {
   return (
     <View style={styles.container}>
       <Heading title="Related Product" />
@@ -15,8 +15,6 @@ const ProductRelated: React.FC<Props> = ({ products }) => {
     </View>
   );
 };
-
-export default ProductRelated;
 
 const styles = StyleSheet.create({
   container: {

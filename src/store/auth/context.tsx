@@ -1,22 +1,34 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import reducer from './authReducer';
+import reducer from './reducer';
 import { SET_CURRENT_USER, SET_AUTH_ERROR, SET_AUTH_LOGOUT } from './constants';
 import { AuthService } from '@/services/authService';
 import { AsyncStorage } from 'react-native';
 import { setAuthHeaderToken, removeAuthHeaderToken } from '@/utils/auth';
 import { User } from '@/types';
 
-const initialState = {
+interface InitialStateType {
+  currentUser: User | null;
+  loading: boolean;
+  isAuthenticated: boolean;
+  login(user: User, token: string): void;
+  logOut(): void;
+}
+
+const AuthContext = createContext<InitialStateType>({
   loading: true,
   currentUser: null,
   isAuthenticated: false,
   login: (user: User, token: string) => {},
   logOut: () => {},
-};
-
-const AuthContext = createContext(initialState);
+});
 
 export const AuthProvider: React.FC = ({ children }) => {
+  const initialState = {
+    loading: true,
+    currentUser: null,
+    isAuthenticated: false,
+  };
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
@@ -31,9 +43,9 @@ export const AuthProvider: React.FC = ({ children }) => {
         const { user, token } = await AuthService.getMe();
         dispatch({ type: SET_CURRENT_USER, payload: { user, token } });
         return;
+      } else {
+        logOut();
       }
-      // throw an error if user token is null
-      throw new Error('User token not found');
     } catch (error) {
       removeAuthHeaderToken();
       dispatch({ type: SET_AUTH_ERROR });
@@ -52,6 +64,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const logOut = async () => {
     try {
+      removeAuthHeaderToken();
       await AsyncStorage.removeItem('userToken');
       dispatch({ type: SET_AUTH_LOGOUT });
     } catch (error) {

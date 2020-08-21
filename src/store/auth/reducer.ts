@@ -1,8 +1,9 @@
 import { SET_CURRENT_USER, SET_AUTH_ERROR, SET_AUTH_LOGOUT } from './constants';
+import { User } from '@/types';
 
 interface State {
   loading: boolean;
-  currentUser: null;
+  currentUser: null | User;
   isAuthenticated: boolean;
 }
 

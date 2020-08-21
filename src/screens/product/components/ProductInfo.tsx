@@ -7,7 +7,7 @@ interface Props {
   product: Product;
 }
 
-const ProductInfo: React.FC<Props> = ({ product }) => {
+export const ProductInfo: React.FC<Props> = ({ product }) => {
   return (
     <>
       <View style={styles.imgContainer}>
@@ -21,8 +21,6 @@ const ProductInfo: React.FC<Props> = ({ product }) => {
     </>
   );
 };
-
-export default ProductInfo;
 
 const styles = StyleSheet.create({
   imgContainer: { paddingBottom: 15 },

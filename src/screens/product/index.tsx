@@ -5,21 +5,25 @@ import {
   Share,
   TouchableOpacity,
   View,
+  Alert,
 } from 'react-native';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
-import { ProductService } from '@/services';
+import { ProductService, CartService } from '@/services';
 import { Product, Products } from '@/types';
-import ProductInfo from './ProductInfo';
-import ProductSkeleton from './ProductSkeleton';
-import ProductRelated from './ProductRelated';
+import { ProductInfo, ProductRelated, ProductSkeleton } from './components';
 import { Ionicons } from '@expo/vector-icons';
 import { InputQuantity, Button } from '@/components';
+import { useAuth, useCart } from '@/store';
+import navigationNames from '@/navigation/navigationNames';
 
 interface RouteParams {
   id: string;
 }
 
 export const ProductScreen = () => {
+  const { isAuthenticated } = useAuth();
+  const { addCart } = useCart();
+
   const route = useRoute<RouteProp<Record<string, RouteParams>, string>>();
   const navigation = useNavigation();
 
@@ -97,6 +101,27 @@ export const ProductScreen = () => {
     setQty(value);
   };
 
+  const handleAddToCart = async () => {
+    if (!isAuthenticated) {
+      navigation.navigate(navigationNames.rootAuthScreen);
+      return;
+    }
+
+    if (!product) return;
+
+    try {
+      const cart = {
+        quantity: qty,
+        product,
+      };
+      await CartService.addCart(qty, product._id);
+      addCart(cart);
+      Alert.alert('Success', 'Successfully added to your cart');
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
+  };
+
   if (isLoading || !product) {
     return <ProductSkeleton />;
   }
@@ -116,7 +141,12 @@ export const ProductScreen = () => {
           handleButtonPressed={handleButtonClickQty}
           onChangeText={handleChangeQty}
         />
-        <Button title="Add to Cart" type="primary" style={styles.btnAddCart} />
+        <Button
+          title="Add to Cart"
+          type="primary"
+          style={styles.btnAddCart}
+          onPress={handleAddToCart}
+        />
       </View>
       <ProductRelated products={relatedProducts} />
     </Animated.ScrollView>

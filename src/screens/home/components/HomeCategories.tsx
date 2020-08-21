@@ -5,7 +5,7 @@ import { Category } from '@/types';
 import { CategoryService } from '@/services';
 import HomeCategoriesSkeleton from './HomeCategoriesSkeleton';
 
-const HomeCategories = () => {
+export const HomeCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
@@ -50,8 +50,6 @@ const HomeCategories = () => {
     </View>
   );
 };
-
-export default HomeCategories;
 
 const styles = StyleSheet.create({
   container: {

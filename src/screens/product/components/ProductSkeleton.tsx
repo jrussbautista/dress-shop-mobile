@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colors } from '@/theme';
 
-const ProductSkeleton = () => {
+export const ProductSkeleton = () => {
   return (
     <View>
       <View style={styles.box}></View>
@@ -14,8 +14,6 @@ const ProductSkeleton = () => {
     </View>
   );
 };
-
-export default ProductSkeleton;
 
 const styles = StyleSheet.create({
   container: { paddingHorizontal: 15 },

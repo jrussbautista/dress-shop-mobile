@@ -5,7 +5,7 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { Banner } from '@/types';
 import { colors } from '@/theme';
 
-const HomeBanners = () => {
+export const HomeBanners = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -79,8 +79,6 @@ const HomeBanners = () => {
     </View>
   );
 };
-
-export default HomeBanners;
 
 const styles = StyleSheet.create({
   bannerImg: {

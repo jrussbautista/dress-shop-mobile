@@ -12,7 +12,7 @@ import React from 'react';
 import { tabScreenOptions } from './NavigationHelper';
 import { colors } from '@/theme';
 import navigationNames from './navigationNames';
-import { useAuth } from '@/store';
+import { useAuth, useCart } from '@/store';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,8 +41,36 @@ const SearchStackScreen = () => {
   );
 };
 
+const CartStackScreen = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Cart" component={CartScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const ProfileStackScreen = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+    </Stack.Navigator>
+  );
+};
+
 const HomeTabNavigator = () => {
+  interface CartTabOptions {
+    tabBarBadge?: number;
+  }
+
   const { isAuthenticated } = useAuth();
+  const { cartsNum } = useCart();
+
+  let cartTabOptions: CartTabOptions = {};
+
+  if (cartsNum > 0) {
+    cartTabOptions = { tabBarBadge: cartsNum };
+  }
+
   return (
     <Tab.Navigator
       screenOptions={tabScreenOptions}
@@ -56,10 +84,14 @@ const HomeTabNavigator = () => {
         name={navigationNames.searchTab}
         component={SearchStackScreen}
       />
-      <Tab.Screen name={navigationNames.cartTab} component={CartScreen} />
+      <Tab.Screen
+        name={navigationNames.cartTab}
+        component={CartStackScreen}
+        options={cartTabOptions}
+      />
       <Tab.Screen
         name={navigationNames.profileTab}
-        component={ProfileScreen}
+        component={ProfileStackScreen}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             if (isAuthenticated) return;

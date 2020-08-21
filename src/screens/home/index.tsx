@@ -10,8 +10,7 @@ import {
   Text,
 } from 'react-native';
 import { ProductService } from '@/services';
-import HomeCategories from './HomeCategories';
-import HomeBanners from './HomeBanners';
+import { HomeCategories, HomeBanners } from './components';
 import { Products } from '@/types';
 import { ProductList, ProductListSkeleton, Heading } from '@/components';
 import { colors } from '@/theme';
@@ -52,6 +51,7 @@ export const HomeScreen = () => {
       if (!hasLoadMore) {
         return;
       }
+      setHasLoadMore;
       setIsLoadingMore(true);
       setPage((page) => page + 1);
       const payload = { page: page + 1, limit: PAGE_LIMIT };
