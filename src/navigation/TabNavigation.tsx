@@ -21,7 +21,7 @@ const HomeStackScreen = () => {
   return (
     <Stack.Navigator headerMode="screen">
       <Stack.Screen
-        name="Home"
+        name={navigationNames.homeScreen}
         component={HomeScreen}
         options={{ title: 'Dress' }}
       />
@@ -36,7 +36,10 @@ const HomeStackScreen = () => {
 const SearchStackScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Search" component={SearchScreen} />
+      <Stack.Screen
+        name={navigationNames.searchScreen}
+        component={SearchScreen}
+      />
     </Stack.Navigator>
   );
 };
@@ -44,7 +47,11 @@ const SearchStackScreen = () => {
 const CartStackScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Cart" component={CartScreen} />
+      <Stack.Screen name={navigationNames.cartScreen} component={CartScreen} />
+      <Stack.Screen
+        name={navigationNames.productCartScreenTab}
+        component={ProductScreen}
+      />
     </Stack.Navigator>
   );
 };
@@ -52,7 +59,10 @@ const CartStackScreen = () => {
 const ProfileStackScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen
+        name={navigationNames.profileScreen}
+        component={ProfileScreen}
+      />
     </Stack.Navigator>
   );
 };

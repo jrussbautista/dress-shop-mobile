@@ -12,12 +12,14 @@ interface Props {
   value: number;
   onChangeText(value: number): void;
   handleButtonPressed(val: string): void;
+  disabled?: boolean;
 }
 
 export const InputQuantity: React.FC<Props> = ({
   value,
   onChangeText,
   handleButtonPressed,
+  disabled,
 }) => {
   const handleChangeText = (val: string) => {
     onChangeText(Number(val));
@@ -31,6 +33,7 @@ export const InputQuantity: React.FC<Props> = ({
           { borderLeftWidth: 1, borderLeftColor: '#d5d5d5' },
         ]}
         onPress={() => handleButtonPressed('sub')}
+        disabled={disabled}
       >
         <View>
           <Text> - </Text>
@@ -48,6 +51,7 @@ export const InputQuantity: React.FC<Props> = ({
           { borderRightWidth: 1, borderRightColor: '#d5d5d5' },
         ]}
         onPress={() => handleButtonPressed('add')}
+        disabled={disabled}
       >
         <View>
           <Text> + </Text>

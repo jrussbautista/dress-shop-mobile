@@ -5,18 +5,25 @@ import React, {
   useReducer,
   useMemo,
 } from 'react';
-import { useAuth } from '../auth/context';
+import { useAuth } from '../auth';
 import reducer from './reducer';
-import { ADD_CART, CLEAR_CART, REMOVE_CART, SET_CART } from './constants';
-import { Cart, AddCart } from '@/types';
+import {
+  ADD_CART,
+  CLEAR_CART,
+  REMOVE_CART,
+  SET_CART,
+  UPDATE_QTY_CART,
+} from './constants';
+import { Cart } from '@/types';
 import { CartService } from '@/services';
 
 interface InitialStateType {
   carts: Cart[];
   cartsNum: number;
-  addCart: (cart: AddCart) => void;
+  addCart: (cart: Cart) => void;
   removeCart: (cartId: string) => void;
   clearCart: () => void;
+  updateCartQuantity: (cartId: string, qty: number) => void;
 }
 
 export const CartContext = createContext<InitialStateType>({
@@ -25,6 +32,7 @@ export const CartContext = createContext<InitialStateType>({
   addCart: () => null,
   removeCart: () => null,
   clearCart: () => null,
+  updateCartQuantity: () => null,
 });
 
 export const CartProvider: React.FC = ({ children }) => {
@@ -53,7 +61,7 @@ export const CartProvider: React.FC = ({ children }) => {
     }
   }, [isAuthenticated]);
 
-  const addCart = async (cart: AddCart) => {
+  const addCart = async (cart: Cart) => {
     dispatch({ type: ADD_CART, payload: cart });
   };
 
@@ -65,12 +73,17 @@ export const CartProvider: React.FC = ({ children }) => {
     dispatch({ type: CLEAR_CART });
   };
 
+  const updateCartQuantity = (cartId: string, quantity: number) => {
+    dispatch({ type: UPDATE_QTY_CART, payload: { id: cartId, quantity } });
+  };
+
   const value = useMemo(
     () => ({
       ...state,
       addCart,
       removeCart,
       clearCart,
+      updateCartQuantity,
     }),
     [state]
   );

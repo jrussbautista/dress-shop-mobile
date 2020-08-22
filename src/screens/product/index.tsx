@@ -110,12 +110,8 @@ export const ProductScreen = () => {
     if (!product) return;
 
     try {
-      const cart = {
-        quantity: qty,
-        product,
-      };
-      await CartService.addCart(qty, product._id);
-      addCart(cart);
+      const { cart } = await CartService.addCart(qty, product._id);
+      addCart({ _id: cart._id, quantity: cart.quantity, product });
       Alert.alert('Success', 'Successfully added to your cart');
     } catch (error) {
       Alert.alert('Error', error.message);

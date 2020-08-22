@@ -1,4 +1,10 @@
-import { ADD_CART, REMOVE_CART, SET_CART, CLEAR_CART } from './constants';
+import {
+  ADD_CART,
+  REMOVE_CART,
+  SET_CART,
+  CLEAR_CART,
+  UPDATE_QTY_CART,
+} from './constants';
 import { Cart } from '@/types';
 
 type State = {
@@ -39,11 +45,20 @@ export default (state: State, action: Action): State => {
     }
     case REMOVE_CART: {
       const filteredCarts = state.carts.filter(
-        (cart) => cart.product._id !== action.payload.id
+        (cart) => cart._id !== action.payload.id
       );
       return { ...state, carts: filteredCarts, cartsNum: state.cartsNum - 1 };
     }
 
+    case UPDATE_QTY_CART: {
+      const updatedCarts = state.carts.map((cart) =>
+        cart._id === action.payload.id
+          ? { ...cart, quantity: action.payload.quantity }
+          : cart
+      );
+
+      return { ...state, carts: updatedCarts };
+    }
     default:
       return state;
   }

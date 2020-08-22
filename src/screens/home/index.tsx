@@ -27,14 +27,14 @@ export const HomeScreen = () => {
   const [hasLoadMore, setHasLoadMore] = useState(true);
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(page);
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (currentPage: number) => {
     try {
       setLoading(true);
       const payload = {
-        page,
+        page: currentPage,
         limit: PAGE_LIMIT,
       };
       const results = await ProductService.getProducts(payload);
@@ -51,13 +51,12 @@ export const HomeScreen = () => {
       if (!hasLoadMore) {
         return;
       }
-      setHasLoadMore;
       setIsLoadingMore(true);
       setPage((page) => page + 1);
       const payload = { page: page + 1, limit: PAGE_LIMIT };
-      const results = await ProductService.getProducts(payload);
-      const total = results.total;
-      const newProducts = results.products;
+      const { total, products: newProducts } = await ProductService.getProducts(
+        payload
+      );
       const isLoadMore = total <= newProducts.length;
       setProducts([...products, ...newProducts]);
       setHasLoadMore(isLoadMore);
@@ -72,7 +71,7 @@ export const HomeScreen = () => {
     setHasLoadMore(true);
     setPage(1);
     setRefreshing(true);
-    await fetchProducts();
+    await fetchProducts(1);
     setRefreshing(false);
   };
 
@@ -141,7 +140,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: 50,
   },
   msg: {
     padding: 10,

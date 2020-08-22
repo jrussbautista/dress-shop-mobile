@@ -6,6 +6,10 @@ interface CartsData {
   carts: Cart[];
 }
 
+interface CartData {
+  cart: Cart;
+}
+
 const fetchCarts = async (): Promise<CartsData> => {
   try {
     const { data } = await apiClient.get(`/carts`);
@@ -18,13 +22,22 @@ const fetchCarts = async (): Promise<CartsData> => {
   }
 };
 
-const addCart = async (quantity: number, productId: string): Promise<void> => {
+const addCart = async (
+  quantity: number,
+  productId: string
+): Promise<CartData> => {
   try {
     const url = `/carts`;
-    return await apiClient.post(url, {
+    const { data } = await apiClient.post(url, {
       quantity,
       productId,
     });
+
+    const cartData: CartData = {
+      cart: data.data.cart,
+    };
+
+    return cartData;
   } catch (error) {
     throw new Error(catchError(error));
   }
