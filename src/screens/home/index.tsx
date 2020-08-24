@@ -31,7 +31,7 @@ export const HomeScreen = () => {
   const handleOnScroll = ({
     nativeEvent,
   }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (isReachedEnd(nativeEvent)) {
+    if (isReachedEnd(nativeEvent) && !loading) {
       loadMore();
     }
   };

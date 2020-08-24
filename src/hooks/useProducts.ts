@@ -10,12 +10,13 @@ interface ProductsPayload {
 
 export const useProducts = (productsPayload?: ProductsPayload) => {
   const [products, setProducts] = useState<Products>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [page, setPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasLoadMore, setHasLoadMore] = useState(true);
   const [total, setTotal] = useState(0);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     loadProducts({ page, ...productsPayload });
@@ -35,9 +36,10 @@ export const useProducts = (productsPayload?: ProductsPayload) => {
       setProducts(fetchProducts);
       setTotal(total);
     } catch (error) {
-      console.log(error.message);
+      setError(error.message);
     } finally {
       setLoading(false);
+      setHasLoadMore(true);
     }
   };
 
@@ -47,13 +49,13 @@ export const useProducts = (productsPayload?: ProductsPayload) => {
         return;
       }
       setIsLoadingMore(true);
-      setPage((page) => page + 1);
+      setPage(page + 1);
       const payload = { page: page + 1, limit: PAGE_LIMIT };
       const { total, products: newProducts } = await ProductService.getProducts(
         payload
       );
       const isLoadMore = total <= newProducts.length;
-      setProducts([...products, ...newProducts]);
+      setProducts((products) => [...products, ...newProducts]);
       setHasLoadMore(isLoadMore);
     } catch (error) {
       console.log(error.message);
@@ -73,6 +75,7 @@ export const useProducts = (productsPayload?: ProductsPayload) => {
   return {
     products,
     loading,
+    error,
     refreshing,
     isLoadingMore,
     hasLoadMore,

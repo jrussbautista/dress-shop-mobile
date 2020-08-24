@@ -31,7 +31,6 @@ export const SearchScreen = () => {
     refresh,
     products,
     loadProducts,
-    total,
   } = useProducts({ keyword: searchText });
 
   const handleSubmit = () => {
@@ -45,7 +44,7 @@ export const SearchScreen = () => {
   const handleOnScroll = ({
     nativeEvent,
   }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (isReachedEnd(nativeEvent)) {
+    if (isReachedEnd(nativeEvent) && !loading) {
       loadMore();
     }
   };
@@ -68,12 +67,6 @@ export const SearchScreen = () => {
     </View>
   ) : null;
 
-  const searchTotalText = (
-    <View style={styles.searchTotalContainer}>
-      <Text style={styles.searchTotalText}>{total} results found</Text>
-    </View>
-  );
-
   return (
     <TouchableWithoutFeedback
       style={styles.main}
@@ -93,7 +86,6 @@ export const SearchScreen = () => {
           onScroll={handleOnScroll}
         >
           <View style={styles.productContainer}>
-            {searchTotalText}
             {productList}
             {spinnerElement}
             {reachedEndElement}

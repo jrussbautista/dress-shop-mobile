@@ -7,13 +7,16 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
+    "androidStatusBar": {
+      "barStyle": "light-content"
+    },
     "ios": {
       "supportsTablet": true
     },
