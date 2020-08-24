@@ -9,6 +9,7 @@ export const HomeBanners = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [error, setError] = useState<string | null>(null);
   const carouselRef = useRef(null);
 
   const width = Dimensions.get('screen').width;
@@ -20,7 +21,7 @@ export const HomeBanners = () => {
         const results = await BannerService.getBanners();
         setBanners(results.banners);
       } catch (error) {
-        console.log(error);
+        setError(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -28,7 +29,7 @@ export const HomeBanners = () => {
     fetchBanners();
   }, []);
 
-  if (isLoading) {
+  if (isLoading || error) {
     return <View style={styles.box}></View>;
   }
 

@@ -8,6 +8,7 @@ import HomeCategoriesSkeleton from './HomeCategoriesSkeleton';
 export const HomeCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export const HomeCategories = () => {
         const results = await CategoryService.getCategories();
         setCategories(results.categories);
       } catch (error) {
-        console.log(error);
+        setError(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -25,7 +26,7 @@ export const HomeCategories = () => {
     fetchCategories();
   }, []);
 
-  if (isLoading) {
+  if (isLoading || error) {
     return <HomeCategoriesSkeleton />;
   }
 

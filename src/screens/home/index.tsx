@@ -9,8 +9,12 @@ import {
   NativeSyntheticEvent,
   Text,
 } from 'react-native';
-import { HomeCategories, HomeBanners } from './components';
-import { ProductList, ProductListSkeleton, Heading } from '@/components';
+import {
+  HomeCategories,
+  HomeBanners,
+  HomeProducts,
+  HomeProductListSkeleton,
+} from './components';
 import { colors } from '@/theme';
 import { useProducts } from '@/hooks';
 import isReachedEnd from '@/utils/reachEnd';
@@ -36,10 +40,10 @@ export const HomeScreen = () => {
     }
   };
 
-  const productList = loading ? (
-    <ProductListSkeleton />
+  const productListSection = loading ? (
+    <HomeProductListSkeleton />
   ) : (
-    <ProductList products={products} />
+    <HomeProducts products={products} />
   );
 
   const spinnerElement = isLoadingMore ? (
@@ -64,8 +68,7 @@ export const HomeScreen = () => {
       <HomeBanners />
       <HomeCategories />
       <View style={styles.productOverview}>
-        <Heading title="Product Overview" />
-        {productList}
+        {productListSection}
         {spinnerElement}
         {reachedEndElement}
       </View>

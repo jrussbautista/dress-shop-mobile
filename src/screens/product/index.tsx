@@ -12,8 +12,8 @@ import { ProductService, CartService } from '@/services';
 import { Product, Products } from '@/types';
 import { ProductInfo, ProductRelated, ProductSkeleton } from './components';
 import { Ionicons } from '@expo/vector-icons';
-import { InputQuantity, Button } from '@/components';
-import { useAuth, useCart } from '@/store';
+import { InputQuantity, Button, ErrorMessage } from '@/components';
+import { useAuth, useCart, useToast } from '@/store';
 import navigationNames from '@/navigation/navigationNames';
 
 interface RouteParams {
@@ -21,6 +21,7 @@ interface RouteParams {
 }
 
 export const ProductScreen = () => {
+  const { showToast } = useToast();
   const { isAuthenticated } = useAuth();
   const { addCart } = useCart();
 
@@ -33,6 +34,7 @@ export const ProductScreen = () => {
   const [relatedProducts, setRelatedProducts] = useState<Products>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [qty, setQty] = useState(1);
+  const [error, setError] = useState<string | null>(null);
 
   const animation = new Animated.Value(0);
   const opacity = animation.interpolate({
@@ -74,7 +76,7 @@ export const ProductScreen = () => {
         setProduct(results.product);
         setRelatedProducts(results.relatedProducts);
       } catch (error) {
-        console.log(error);
+        setError(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -103,6 +105,7 @@ export const ProductScreen = () => {
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
+      showToast('error', 'Please login first');
       navigation.navigate(navigationNames.rootAuthScreen);
       return;
     }
@@ -112,7 +115,7 @@ export const ProductScreen = () => {
     try {
       const { cart } = await CartService.addCart(qty, product._id);
       addCart({ _id: cart._id, quantity: cart.quantity, product });
-      Alert.alert('Success', 'Successfully added to your cart');
+      showToast('success', 'Successfully added to your cart');
     } catch (error) {
       Alert.alert('Error', error.message);
     }
@@ -120,6 +123,12 @@ export const ProductScreen = () => {
 
   if (isLoading || !product) {
     return <ProductSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <ErrorMessage message="The product may not exist or we've encounter an error. Please try again" />
+    );
   }
 
   return (

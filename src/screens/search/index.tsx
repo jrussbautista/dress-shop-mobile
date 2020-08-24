@@ -55,6 +55,14 @@ export const SearchScreen = () => {
     <ProductList products={products} />
   );
 
+  const searchEmptyText =
+    !loading && products.length === 0 ? (
+      <View style={styles.searchEmpty}>
+        <Text style={styles.searchEmptyHeading}> No matching products.</Text>
+        <Text style={styles.searchEmptySub}> Try a different search. </Text>
+      </View>
+    ) : null;
+
   const spinnerElement = isLoadingMore ? (
     <View style={styles.loading}>
       <ActivityIndicator color={colors.primary} size={SPINNER_SIZE} />
@@ -86,6 +94,7 @@ export const SearchScreen = () => {
           onScroll={handleOnScroll}
         >
           <View style={styles.productContainer}>
+            {searchEmptyText}
             {productList}
             {spinnerElement}
             {reachedEndElement}
@@ -127,5 +136,15 @@ const styles = StyleSheet.create({
   },
   searchTotalText: {
     fontSize: 16,
+  },
+  searchEmpty: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchEmptyHeading: {
+    fontWeight: '700',
+  },
+  searchEmptySub: {
+    marginTop: 5,
   },
 });
