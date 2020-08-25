@@ -33,10 +33,10 @@ const styles = StyleSheet.create({
   searchContainer: {
     borderRadius: 50,
     paddingHorizontal: 15,
-    height: 50,
+    height: 40,
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: colors.lightGray,
+    backgroundColor: colors.lighterGray,
     margin: 15,
   },
   textInput: {

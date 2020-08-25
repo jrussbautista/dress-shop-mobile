@@ -11,16 +11,41 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
-import { SearchForm } from './components';
+import { useRoute, RouteProp } from '@react-navigation/native';
+import { SearchForm, SearchCategory, SearchFilter } from './components';
 import { useProducts } from '@/hooks';
 import { ProductList, ProductListSkeleton } from '@/components';
 import { colors } from '@/theme';
 import isReachedEnd from '@/utils/reachEnd';
 
+interface Payload {
+  keyword?: string;
+  category?: string;
+}
+
+interface RouteParams {
+  category: string;
+}
+
 const SPINNER_SIZE = 35;
 
 export const SearchScreen = () => {
+  const route = useRoute<RouteProp<Record<string, RouteParams>, string>>();
+
+  const category = route.params.category ? route.params.category : '';
+
   const [searchText, setSearchText] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(category);
+
+  let payload: Payload = {};
+
+  if (selectedCategory) {
+    payload.category = selectedCategory;
+  }
+
+  if (searchText) {
+    payload.keyword = searchText;
+  }
 
   const {
     isLoadingMore,
@@ -31,10 +56,10 @@ export const SearchScreen = () => {
     refresh,
     products,
     loadProducts,
-  } = useProducts({ keyword: searchText });
+  } = useProducts(payload);
 
   const handleSubmit = () => {
-    loadProducts({ keyword: searchText });
+    loadProducts(payload);
   };
 
   const handleChangeText = (val: string) => {
@@ -47,6 +72,11 @@ export const SearchScreen = () => {
     if (isReachedEnd(nativeEvent) && !loading) {
       loadMore();
     }
+  };
+
+  const handlePressCategory = (val: string) => {
+    setSelectedCategory(val);
+    loadProducts({ ...payload, category: val });
   };
 
   const productList = loading ? (
@@ -87,6 +117,13 @@ export const SearchScreen = () => {
           value={searchText}
           onChangeText={handleChangeText}
         />
+        <View style={styles.actionContainer}>
+          <SearchCategory
+            active={selectedCategory}
+            onPress={handlePressCategory}
+          />
+          <SearchFilter />
+        </View>
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={refresh} />
@@ -146,5 +183,10 @@ const styles = StyleSheet.create({
   },
   searchEmptySub: {
     marginTop: 5,
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
   },
 });

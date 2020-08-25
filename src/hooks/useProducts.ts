@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 interface ProductsPayload {
   page?: number;
   keyword?: string;
+  category?: string;
 }
 
 export const useProducts = (productsPayload?: ProductsPayload) => {

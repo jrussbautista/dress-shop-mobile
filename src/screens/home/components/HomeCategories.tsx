@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Category } from '@/types';
 import { CategoryService } from '@/services';
 import HomeCategoriesSkeleton from './HomeCategoriesSkeleton';
+import navigationNames from '@/navigation/navigationNames';
 
 export const HomeCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -34,7 +35,11 @@ export const HomeCategories = () => {
     <View style={styles.container}>
       {categories.map((category) => (
         <TouchableOpacity
-          onPress={() => navigation.navigate('Search')}
+          onPress={() =>
+            navigation.navigate(navigationNames.searchTab, {
+              category: category.name.toLowerCase(),
+            })
+          }
           key={category._id}
         >
           <View style={styles.list}>
