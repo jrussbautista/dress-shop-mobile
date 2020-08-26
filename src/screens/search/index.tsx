@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
   ActivityIndicator,
   ScrollView,
   RefreshControl,
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
-import { useRoute, RouteProp } from '@react-navigation/native';
-import { SearchForm, SearchCategory, SearchFilter } from './components';
+import { useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
+import { SearchForm, SearchFilterModal } from './components';
 import { useProducts } from '@/hooks';
-import { ProductList, ProductListSkeleton } from '@/components';
+import { ProductList, ProductListSkeleton, MySafeAreaView } from '@/components';
 import { colors } from '@/theme';
 import isReachedEnd from '@/utils/reachEnd';
+import { AntDesign } from '@expo/vector-icons';
+import { FilterData } from '@/types';
 
-interface Payload {
-  keyword?: string;
+interface RouteParams {
   category?: string;
 }
 
-interface RouteParams {
-  category: string;
+interface Payload extends FilterData {
+  keyword?: string;
 }
 
 const SPINNER_SIZE = 35;
@@ -32,20 +34,17 @@ const SPINNER_SIZE = 35;
 export const SearchScreen = () => {
   const route = useRoute<RouteProp<Record<string, RouteParams>, string>>();
 
-  const category = route.params.category ? route.params.category : '';
-
-  const [searchText, setSearchText] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(category);
-
   let payload: Payload = {};
 
-  if (selectedCategory) {
-    payload.category = selectedCategory;
+  const category = route.params?.category ? route.params.category : '';
+
+  if (category) {
+    payload.category = category;
   }
 
-  if (searchText) {
-    payload.keyword = searchText;
-  }
+  const [searchText, setSearchText] = useState('');
+  const [filterData, setFilterData] = useState<FilterData>(payload);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const {
     isLoadingMore,
@@ -56,7 +55,17 @@ export const SearchScreen = () => {
     refresh,
     products,
     loadProducts,
-  } = useProducts(payload);
+  } = useProducts(filterData);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (category) {
+        const newFilterData = { ...filterData, category };
+        setFilterData(newFilterData);
+        loadProducts(newFilterData);
+      }
+    }, [category])
+  );
 
   const handleSubmit = () => {
     loadProducts(payload);
@@ -74,9 +83,25 @@ export const SearchScreen = () => {
     }
   };
 
-  const handlePressCategory = (val: string) => {
-    setSelectedCategory(val);
-    loadProducts({ ...payload, category: val });
+  const handleApplyFilter = (selectedData: FilterData) => {
+    const newFilterData = {
+      ...filterData,
+      page: 1,
+    };
+    if (selectedData.category) {
+      newFilterData.category = selectedData.category;
+    }
+    if (selectedData.sort) {
+      newFilterData.sort = selectedData.sort;
+    }
+
+    setFilterData(newFilterData);
+    loadProducts(newFilterData);
+  };
+
+  const handleResetFilter = () => {
+    setFilterData({});
+    loadProducts({ page: 1 });
   };
 
   const productList = loading ? (
@@ -105,40 +130,52 @@ export const SearchScreen = () => {
     </View>
   ) : null;
 
+  const filterModalElement = isOpenModal ? (
+    <SearchFilterModal
+      onDismissModal={() => setIsOpenModal(false)}
+      onApply={handleApplyFilter}
+      initialFilterData={filterData}
+      onReset={handleResetFilter}
+    />
+  ) : null;
+
   return (
-    <TouchableWithoutFeedback
-      style={styles.main}
-      onPress={() => Keyboard.dismiss()}
-      accessible={false}
-    >
-      <View style={styles.container}>
-        <SearchForm
-          onSubmit={handleSubmit}
-          value={searchText}
-          onChangeText={handleChangeText}
-        />
-        <View style={styles.actionContainer}>
-          <SearchCategory
-            active={selectedCategory}
-            onPress={handlePressCategory}
-          />
-          <SearchFilter />
-        </View>
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={refresh} />
-          }
-          onScroll={handleOnScroll}
-        >
-          <View style={styles.productContainer}>
-            {searchEmptyText}
-            {productList}
-            {spinnerElement}
-            {reachedEndElement}
+    <>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <MySafeAreaView>
+          <View style={styles.container}>
+            <View style={styles.topSearchContainer}>
+              <SearchForm
+                onSubmit={handleSubmit}
+                value={searchText}
+                onChangeText={handleChangeText}
+              />
+              <TouchableOpacity
+                style={styles.filterIcon}
+                onPress={() => setIsOpenModal(true)}
+              >
+                <AntDesign name="filter" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+              }
+              onScroll={handleOnScroll}
+            >
+              <View style={styles.productContainer}>
+                {searchEmptyText}
+                {productList}
+                {spinnerElement}
+                {reachedEndElement}
+              </View>
+            </ScrollView>
           </View>
-        </ScrollView>
-      </View>
-    </TouchableWithoutFeedback>
+        </MySafeAreaView>
+      </TouchableWithoutFeedback>
+      {filterModalElement}
+    </>
   );
 };
 
@@ -146,6 +183,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  topSearchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+    marginVertical: 15,
+  },
+  filterIcon: {
+    marginLeft: 5,
   },
   main: {
     flex: 1,
@@ -183,10 +230,5 @@ const styles = StyleSheet.create({
   },
   searchEmptySub: {
     marginTop: 5,
-  },
-  actionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
   },
 });

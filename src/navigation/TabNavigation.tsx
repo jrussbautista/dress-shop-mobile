@@ -40,6 +40,7 @@ const SearchStackScreen = () => {
       <Stack.Screen
         name={navigationNames.searchScreen}
         component={SearchScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
@@ -101,6 +102,7 @@ const HomeTabNavigator = () => {
     >
       <Tab.Screen name={navigationNames.homeTab} component={HomeStackScreen} />
       <Tab.Screen
+        options={{}}
         name={navigationNames.searchTab}
         component={SearchStackScreen}
       />

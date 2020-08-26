@@ -5,7 +5,7 @@ import { colors } from '@/theme';
 interface Props {
   title: string;
   onPress?(): void;
-  type?: 'primary' | 'default';
+  type?: 'primary' | 'default' | 'inverted';
   style?: ViewStyle;
 }
 
@@ -15,11 +15,24 @@ export const Button: React.FC<Props> = ({
   type = 'default',
   style,
 }) => {
-  const btnStyle = type === 'primary' ? styles.primary : {};
+  let btnStyle,
+    btnTextStyle = {};
+
+  switch (type) {
+    case 'primary':
+      btnStyle = styles.primary;
+      break;
+    case 'inverted':
+      btnStyle = styles.inverted;
+      btnTextStyle = styles.invertedText;
+      break;
+    default:
+      btnStyle = {};
+  }
 
   return (
     <TouchableOpacity onPress={onPress} style={[styles.btn, btnStyle, style]}>
-      <Text style={styles.btnText}>{title}</Text>
+      <Text style={[styles.btnText, btnTextStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -39,5 +52,13 @@ const styles = StyleSheet.create({
   },
   primary: {
     backgroundColor: colors.primary,
+  },
+  inverted: {
+    backgroundColor: '#fff',
+    borderColor: colors.primary,
+    borderWidth: 1,
+  },
+  invertedText: {
+    color: colors.primary,
   },
 });

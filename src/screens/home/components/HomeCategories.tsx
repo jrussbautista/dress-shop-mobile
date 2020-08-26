@@ -37,7 +37,8 @@ export const HomeCategories = () => {
         <TouchableOpacity
           onPress={() =>
             navigation.navigate(navigationNames.searchTab, {
-              category: category.name.toLowerCase(),
+              screen: navigationNames.searchScreen,
+              params: { category: category.name.toLowerCase() },
             })
           }
           key={category._id}
