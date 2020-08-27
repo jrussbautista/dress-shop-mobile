@@ -4,7 +4,6 @@ import {
   ProfileScreen,
   CartScreen,
   ProductScreen,
-  LoginScreen,
 } from '@/screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -42,6 +41,10 @@ const SearchStackScreen = () => {
         component={SearchScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name={navigationNames.productSearchScreenTab}
+        component={ProductScreen}
+      />
     </Stack.Navigator>
   );
 };
@@ -59,21 +62,12 @@ const CartStackScreen = () => {
 };
 
 const ProfileStackScreen = () => {
-  const { isAuthenticated } = useAuth();
-
   return (
     <Stack.Navigator>
-      {isAuthenticated ? (
-        <Stack.Screen
-          name={navigationNames.profileScreen}
-          component={ProfileScreen}
-        />
-      ) : (
-        <Stack.Screen
-          name={navigationNames.rootAuthScreen}
-          component={LoginScreen}
-        />
-      )}
+      <Stack.Screen
+        name={navigationNames.profileScreen}
+        component={ProfileScreen}
+      />
     </Stack.Navigator>
   );
 };

@@ -23,7 +23,7 @@ export const ProfileScreen = () => {
   if (!isAuthenticated) {
     return (
       <View style={styles.wrapper}>
-        <Text style={styles.emptyText}> Please login to see your cart </Text>
+        <Text style={styles.emptyText}> Please login to see your profile </Text>
         <Button
           title="Go to Login"
           style={styles.btn}
@@ -41,4 +41,16 @@ export const ProfileScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  emptyText: {
+    textAlign: 'center',
+    padding: 20,
+  },
+  wrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btn: {
+    width: 200,
+  },
+});

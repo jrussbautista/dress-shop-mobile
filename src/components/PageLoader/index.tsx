@@ -1,25 +1,21 @@
 import React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import Modal from 'react-native-modal';
 
-export const PageLoader = () => {
+interface Props {
+  visible: boolean;
+}
+
+const BACKDROP_OPACITY = 0.5;
+const SPINNER_SIZE = 40;
+const SPINNER_COLOR = '#fff';
+
+export const PageLoader = ({ visible }: Props) => {
   return (
-    <View style={styles.pageLoader}>
-      <ActivityIndicator size={40} />
-    </View>
+    <Modal isVisible={visible} backdropOpacity={BACKDROP_OPACITY}>
+      <View>
+        <ActivityIndicator size={SPINNER_SIZE} color={SPINNER_COLOR} />
+      </View>
+    </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  pageLoader: {
-    position: 'absolute',
-    zIndex: 99,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
-});

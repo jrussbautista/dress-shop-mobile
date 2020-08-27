@@ -20,6 +20,7 @@ import { colors } from '@/theme';
 import isReachedEnd from '@/utils/reachEnd';
 import { AntDesign } from '@expo/vector-icons';
 import { FilterData } from '@/types';
+import navigationNames from '@/navigation/navigationNames';
 
 interface RouteParams {
   category?: string;
@@ -107,7 +108,10 @@ export const SearchScreen = () => {
   const productList = loading ? (
     <ProductListSkeleton />
   ) : (
-    <ProductList products={products} />
+    <ProductList
+      routeName={navigationNames.productSearchScreenTab}
+      products={products}
+    />
   );
 
   const searchEmptyText =

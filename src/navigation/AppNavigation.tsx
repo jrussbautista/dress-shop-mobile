@@ -28,7 +28,7 @@ export const AppNavigation = () => {
         <Stack.Screen
           name={navigationNames.rootAuthScreen}
           component={AuthNavigation}
-          options={{ title: 'Login' }}
+          options={{ headerTitle: 'Log In' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

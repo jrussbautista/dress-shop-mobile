@@ -1,14 +1,24 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-import { LoginScreen } from '../screens';
+import { LoginScreen, SignUpScreen } from '../screens';
+import navigationNames from './navigationNames';
 
 const RootStack = createStackNavigator();
 
 export default function () {
   return (
     <RootStack.Navigator>
-      <RootStack.Screen name="Login" component={LoginScreen} />
+      <RootStack.Screen
+        name={navigationNames.loginScreen}
+        component={LoginScreen}
+        options={{ headerTitle: 'Log In' }}
+      />
+      <RootStack.Screen
+        name={navigationNames.signUpScreen}
+        component={SignUpScreen}
+        options={{ headerTitle: 'Sign Up' }}
+      />
     </RootStack.Navigator>
   );
 }

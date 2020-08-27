@@ -8,6 +8,7 @@ import { PageLoader, Button } from '@/components';
 import { colors } from '@/theme';
 import { AuthService } from '@/services';
 import { useAuth } from '@/store';
+import { AuthLink, AuthSocial } from './components';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -37,6 +38,8 @@ export const LoginScreen = () => {
     }
   };
 
+  const handleOnSuccess = () => {};
+
   const LoginSchema = Yup.object().shape({
     password: Yup.string()
       .min(6, 'Password is too Short!')
@@ -46,7 +49,7 @@ export const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      {submitting && <PageLoader />}
+      <PageLoader visible={submitting} />
       <Formik
         validationSchema={LoginSchema}
         initialValues={{ email: '', password: '' }}
@@ -93,6 +96,8 @@ export const LoginScreen = () => {
           </>
         )}
       </Formik>
+      <AuthLink type="login" />
+      <AuthSocial />
     </View>
   );
 };

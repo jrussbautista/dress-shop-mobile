@@ -10,26 +10,24 @@ import {
 import { Product } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '@/theme';
-import navigationNames from '@/navigation/navigationNames';
 
 interface Props {
   product: Product;
+  routeName: string;
 }
 
-const ProductItem: React.FC<Props> = ({ product }) => {
+const ProductItem: React.FC<Props> = ({ product, routeName }) => {
   const navigation = useNavigation();
 
-  return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate(navigationNames.productHomeScreenTab, {
-          id: product._id,
-        })
-      }
-      style={styles.list}
-    >
-      <Image source={{ uri: product.imageURL }} style={styles.listImg} />
+  const handleNavigate = () => {
+    navigation.navigate(routeName, {
+      id: product._id,
+    });
+  };
 
+  return (
+    <TouchableOpacity onPress={handleNavigate} style={styles.list}>
+      <Image source={{ uri: product.imageURL }} style={styles.listImg} />
       <View style={styles.info}>
         <View>
           <Text style={styles.name} numberOfLines={2}>

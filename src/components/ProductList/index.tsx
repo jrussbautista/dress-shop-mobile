@@ -1,17 +1,17 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Products } from '@/types';
+import { Products, Product } from '@/types';
 import ProductItem from './ProductItem';
 
 interface Props {
   products: Products;
+  routeName: string;
 }
 
-export const ProductList: React.FC<Props> = ({ products }) => {
+export const ProductList: React.FC<Props> = ({ products, routeName }) => {
   const productsEl = products.map((product) => (
-    <ProductItem product={product} key={product._id} />
+    <ProductItem routeName={routeName} product={product} key={product._id} />
   ));
-
   return <View style={styles.products}>{productsEl}</View>;
 };
 
