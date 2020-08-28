@@ -4,6 +4,9 @@ import {
   ProfileScreen,
   CartScreen,
   ProductScreen,
+  EditProfileScreen,
+  ChangePasswordScreen,
+  OrdersScreen,
 } from '@/screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -67,6 +70,21 @@ const ProfileStackScreen = () => {
       <Stack.Screen
         name={navigationNames.profileScreen}
         component={ProfileScreen}
+      />
+      <Stack.Screen
+        name={navigationNames.ordersScreen}
+        component={OrdersScreen}
+        options={{ headerTitle: 'My Orders' }}
+      />
+      <Stack.Screen
+        name={navigationNames.changePasswordScreen}
+        component={ChangePasswordScreen}
+        options={{ headerTitle: 'Change Password' }}
+      />
+      <Stack.Screen
+        name={navigationNames.editProfileScreen}
+        component={EditProfileScreen}
+        options={{ headerTitle: 'Edit Profile' }}
       />
     </Stack.Navigator>
   );
