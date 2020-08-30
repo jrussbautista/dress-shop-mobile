@@ -4,7 +4,7 @@ import navigationNames from '@/navigation/navigationNames';
 import { useNavigation } from '@react-navigation/native';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { PageLoader, Button } from '@/components';
+import { PageLoader, Button, MyTextInput } from '@/components';
 import { colors } from '@/theme';
 import { AuthService } from '@/services';
 import { useAuth } from '@/store';
@@ -58,8 +58,8 @@ export const LoginScreen = () => {
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <>
             <View style={styles.group}>
-              <Text>Email</Text>
-              <TextInput
+              <MyTextInput
+                label="Email"
                 style={styles.input}
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
@@ -74,8 +74,8 @@ export const LoginScreen = () => {
               </ErrorMessage>
             </View>
             <View style={styles.group}>
-              <Text>Password</Text>
-              <TextInput
+              <MyTextInput
+                label="Password"
                 style={styles.input}
                 secureTextEntry={true}
                 onChangeText={handleChange('password')}

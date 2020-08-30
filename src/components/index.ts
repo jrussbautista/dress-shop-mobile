@@ -1,5 +1,6 @@
 export * from './Avatar';
 export * from './Button';
+export * from './MyTextInput';
 export * from './PageLoader';
 export * from './Heading';
 export * from './ProductList';

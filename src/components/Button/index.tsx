@@ -7,6 +7,7 @@ interface Props {
   onPress?(): void;
   type?: 'primary' | 'default' | 'inverted';
   style?: ViewStyle;
+  disabled?: boolean;
 }
 
 export const Button: React.FC<Props> = ({
@@ -14,6 +15,7 @@ export const Button: React.FC<Props> = ({
   onPress,
   type = 'default',
   style,
+  disabled = false,
 }) => {
   let btnStyle,
     btnTextStyle = {};
@@ -31,7 +33,11 @@ export const Button: React.FC<Props> = ({
   }
 
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.btn, btnStyle, style]}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.btn, btnStyle, style]}
+      disabled={disabled}
+    >
       <Text style={[styles.btnText, btnTextStyle]}>{title}</Text>
     </TouchableOpacity>
   );

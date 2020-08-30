@@ -83,9 +83,47 @@ const signUp = async ({
   }
 };
 
+export const changePassword = async (
+  passwordFields: UserPasswordData
+): Promise<UserData> => {
+  try {
+    const url = `/auth/change-password`;
+    const { data } = await apiClient.patch(url, passwordFields);
+    const userData: UserData = {
+      user: data.data.user,
+      token: data.data.token,
+    };
+    return userData;
+  } catch (error) {
+    throw new Error(catchError(error));
+  }
+};
+
+export const updateProfile = async (
+  userId: string,
+  userFields: UserFields
+): Promise<{ user: User }> => {
+  try {
+    const url = `/users/${userId}`;
+    const { data } = await apiClient.patch(url, userFields, {
+      params: { id: userId },
+    });
+
+    const userData: { user: User } = {
+      user: data.data.user,
+    };
+
+    return userData;
+  } catch (error) {
+    throw new Error(catchError(error));
+  }
+};
+
 export const AuthService = {
   getMe,
   login,
   signUp,
   verifyGoogleIdToken,
+  changePassword,
+  updateProfile,
 };
