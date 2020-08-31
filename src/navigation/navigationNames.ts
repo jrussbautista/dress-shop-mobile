@@ -13,6 +13,7 @@ export default {
   productHomeScreenTab: 'productHomeScreenTab',
   productCartScreenTab: 'productCartScreenTab',
   productSearchScreenTab: 'productSearchScreenTab',
+  productProfileScreenTab: 'productProfileScreenTab',
   profileTab: 'profileTab',
   homeTab: 'homeTab',
   cartTab: 'cartTab',

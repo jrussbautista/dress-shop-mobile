@@ -86,6 +86,10 @@ const ProfileStackScreen = () => {
         component={EditProfileScreen}
         options={{ headerTitle: 'Edit Profile' }}
       />
+      <Stack.Screen
+        name={navigationNames.productProfileScreenTab}
+        component={ProductScreen}
+      />
     </Stack.Navigator>
   );
 };
