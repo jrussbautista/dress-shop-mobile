@@ -1,6 +1,11 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import reducer from './reducer';
-import { SET_CURRENT_USER, SET_AUTH_ERROR, SET_AUTH_LOGOUT } from './constants';
+import {
+  SET_CURRENT_USER,
+  SET_AUTH_ERROR,
+  SET_AUTH_LOGOUT,
+  UPDATE_CURRENT_USER,
+} from './constants';
 import { AuthService } from '@/services/authService';
 import { AsyncStorage } from 'react-native';
 import { setAuthHeaderToken, removeAuthHeaderToken } from '@/utils/auth';
@@ -12,6 +17,7 @@ interface InitialStateType {
   isAuthenticated: boolean;
   login(user: User, token: string): void;
   logOut(): void;
+  updateCurrentUser(user: User): void;
 }
 
 const AuthContext = createContext<InitialStateType>({
@@ -20,6 +26,7 @@ const AuthContext = createContext<InitialStateType>({
   isAuthenticated: false,
   login: (user: User, token: string) => {},
   logOut: () => {},
+  updateCurrentUser: (user: User) => {},
 });
 
 export const AuthProvider: React.FC = ({ children }) => {
@@ -72,8 +79,14 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   };
 
+  const updateCurrentUser = (user: User) => {
+    dispatch({ type: UPDATE_CURRENT_USER, payload: { user } });
+  };
+
   return (
-    <AuthContext.Provider value={{ ...state, login, logOut }}>
+    <AuthContext.Provider
+      value={{ ...state, login, logOut, updateCurrentUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

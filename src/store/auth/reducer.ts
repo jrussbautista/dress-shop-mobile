@@ -1,4 +1,9 @@
-import { SET_CURRENT_USER, SET_AUTH_ERROR, SET_AUTH_LOGOUT } from './constants';
+import {
+  SET_CURRENT_USER,
+  SET_AUTH_ERROR,
+  SET_AUTH_LOGOUT,
+  UPDATE_CURRENT_USER,
+} from './constants';
 import { User } from '@/types';
 
 interface State {
@@ -28,6 +33,11 @@ export default (state: State, action: Action): State => {
         currentUser: null,
         isAuthenticated: false,
         loading: false,
+      };
+    case UPDATE_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.payload.user,
       };
     default:
       return state;

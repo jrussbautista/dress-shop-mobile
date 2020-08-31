@@ -15,12 +15,12 @@ const menus = [
     to: navigationNames.ordersScreen,
   },
   {
-    title: 'Change Password',
-    to: navigationNames.changePasswordScreen,
-  },
-  {
     title: 'Edit Profile',
     to: navigationNames.editProfileScreen,
+  },
+  {
+    title: 'Change Password',
+    to: navigationNames.changePasswordScreen,
   },
 ];
 
