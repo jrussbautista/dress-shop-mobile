@@ -79,7 +79,7 @@ const signUp = async ({
     };
     return userData;
   } catch (error) {
-    return Promise.reject(error);
+    throw new Error(catchError(error));
   }
 };
 

@@ -118,7 +118,6 @@ const HomeTabNavigator = () => {
     >
       <Tab.Screen name={navigationNames.homeTab} component={HomeStackScreen} />
       <Tab.Screen
-        options={{}}
         name={navigationNames.searchTab}
         component={SearchStackScreen}
       />

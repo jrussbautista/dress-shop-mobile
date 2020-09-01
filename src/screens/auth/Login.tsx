@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import navigationNames from '@/navigation/navigationNames';
 import { useNavigation } from '@react-navigation/native';
 import { Formik, ErrorMessage } from 'formik';
@@ -7,12 +7,13 @@ import * as Yup from 'yup';
 import { PageLoader, Button, MyTextInput } from '@/components';
 import { colors } from '@/theme';
 import { AuthService } from '@/services';
-import { useAuth } from '@/store';
+import { useAuth, useToast } from '@/store';
 import { AuthLink, AuthSocial } from './components';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
   const { login } = useAuth();
+  const { showToast } = useToast();
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -32,13 +33,11 @@ export const LoginScreen = () => {
       await login(user, token);
       navigation.navigate(navigationNames.profileTab);
     } catch (error) {
-      Alert.alert(error.message);
+      showToast('error', error.message);
     } finally {
       setSubmitting(false);
     }
   };
-
-  const handleOnSuccess = () => {};
 
   const LoginSchema = Yup.object().shape({
     password: Yup.string()
