@@ -15,7 +15,7 @@ import React from 'react';
 import { tabScreenOptions } from './NavigationHelper';
 import { colors } from '@/theme';
 import navigationNames from './navigationNames';
-import { useAuth, useCart } from '@/store';
+import { useAuth, useCart } from '@/contexts';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

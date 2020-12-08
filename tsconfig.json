@@ -8,9 +8,9 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
-    "baseUrl": "src", 
+    "baseUrl": "src",
     "paths": {
       "@/*": ["*"]
+    }
   }
 }
- 

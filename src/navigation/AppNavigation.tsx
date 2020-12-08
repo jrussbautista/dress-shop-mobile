@@ -6,8 +6,8 @@ import React from 'react';
 import navigationNames from './navigationNames';
 import HomeTabNavigator from './HomeTabNavigator';
 import AuthNavigation from './AuthNavigation';
-import { useAuth } from '@/store';
-import { AuthLoadingScreen } from '@/screens';
+import { useAuth } from '@/contexts';
+import { AuthLoading } from '@/components/auth';
 
 const Stack = createStackNavigator();
 
@@ -15,7 +15,7 @@ export const AppNavigation = () => {
   const { loading } = useAuth();
 
   if (loading) {
-    return <AuthLoadingScreen />;
+    return <AuthLoading />;
   }
 
   return (

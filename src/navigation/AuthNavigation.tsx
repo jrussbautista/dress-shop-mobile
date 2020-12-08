@@ -1,7 +1,7 @@
+import { LoginScreen, SignUpScreen } from '@/screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-import { LoginScreen, SignUpScreen } from '../screens';
 import navigationNames from './navigationNames';
 
 const RootStack = createStackNavigator();
