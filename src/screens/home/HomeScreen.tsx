@@ -1,14 +1,12 @@
-import Banners from '@/components/banners';
-import { CategoriesSkeleton, Categories } from '@/components/category';
+import { HomeBanners } from '@/components/home';
+import HomeCategories from '@/components/home/HomeCategories';
 import { ProductListSkeleton, ProductList } from '@/components/product';
 import { Heading } from '@/components/ui';
 import { useProducts } from '@/hooks';
 import navigationNames from '@/navigation/navigationNames';
-import { CategoryService, BannerService } from '@/services';
 import { colors } from '@/theme';
-import { Category, Banner } from '@/types';
 import isReachedEnd from '@/utils/reachEnd';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   ScrollView,
   RefreshControl,
@@ -33,41 +31,6 @@ const HomeScreen = () => {
     products,
   } = useProducts();
 
-  const [loadingCategories, setLoadingCategories] = useState(true);
-  const [loadingBanners, setLoadingBanners] = useState(true);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [banners, setBanners] = useState<Banner[]>([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoadingCategories(true);
-        const results = await CategoryService.getCategories();
-        setCategories(results);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoadingCategories(false);
-      }
-    };
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    const fetchBanners = async () => {
-      try {
-        setLoadingCategories(true);
-        const results = await BannerService.getBanners();
-        setBanners(results);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoadingBanners(false);
-      }
-    };
-    fetchBanners();
-  }, []);
-
   const handleOnScroll = ({
     nativeEvent,
   }: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -83,17 +46,8 @@ const HomeScreen = () => {
       }
       onScroll={handleOnScroll}
     >
-      {loadingBanners ? (
-        <View style={styles.bannersBox} />
-      ) : (
-        <Banners banners={banners} />
-      )}
-
-      {loadingCategories ? (
-        <CategoriesSkeleton />
-      ) : (
-        <Categories categories={categories} />
-      )}
+      <HomeBanners />
+      <HomeCategories />
 
       <View style={styles.productOverview}>
         <Heading title="Product Overview" />
@@ -143,9 +97,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     color: colors.primary,
-  },
-  bannersBox: {
-    backgroundColor: colors.lightGray,
-    height: 200,
   },
 });
