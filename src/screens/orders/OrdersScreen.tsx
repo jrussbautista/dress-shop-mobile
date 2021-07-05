@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { OrderService } from '@/services';
-import { Order } from '@/types';
 import { OrderList, OrderListSkeleton } from '@/components/orders';
 import { ErrorMessage } from '@/components/ui';
+import { OrderService } from '@/services';
+import { Order } from '@/types';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 
 const OrdersScreen = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -15,7 +15,7 @@ const OrdersScreen = () => {
       try {
         setIsLoading(true);
         const results = await OrderService.getOrders();
-        setOrders(results.orders);
+        setOrders(results);
       } catch (error) {
         setError(error.message);
       } finally {

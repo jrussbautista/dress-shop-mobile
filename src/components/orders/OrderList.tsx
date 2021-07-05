@@ -1,10 +1,11 @@
+import { Button } from '@/components/ui';
+import navigationNames from '@/navigation/navigationNames';
+import { Order } from '@/types';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { Order } from '@/types';
+
 import OrderItem from './OrderItem';
-import { Button } from '@/components/ui';
-import { useNavigation } from '@react-navigation/native';
-import navigationNames from '@/navigation/navigationNames';
 
 interface Props {
   orders: Order[];

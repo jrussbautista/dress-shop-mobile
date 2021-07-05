@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Order } from '@/types';
+import navigationNames from '@/navigation/navigationNames';
 import { colors } from '@/theme';
+import { Order } from '@/types';
 import { formatPrice, formatDate } from '@/utils/helpers';
 import { useNavigation } from '@react-navigation/native';
-import navigationNames from '@/navigation/navigationNames';
+import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 interface Props {
   order: Order;
