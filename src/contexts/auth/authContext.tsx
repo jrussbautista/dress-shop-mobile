@@ -1,8 +1,8 @@
 import { AuthService } from '@/services/authService';
 import { User } from '@/types';
 import { setAuthHeaderToken, removeAuthHeaderToken } from '@/utils/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { AsyncStorage } from 'react-native';
 
 import {
   SET_CURRENT_USER,
@@ -48,10 +48,16 @@ export const AuthProvider: React.FC = ({ children }) => {
   const loadUser = async () => {
     try {
       const userToken = await AsyncStorage.getItem('userToken');
-      if (userToken) {
+      const userDetails = await AsyncStorage.getItem('user');
+
+      console.log(userDetails);
+
+      if (userToken && userDetails) {
         setAuthHeaderToken(userToken);
-        const { user, token } = await AuthService.getMe();
-        dispatch({ type: SET_CURRENT_USER, payload: { user, token } });
+        dispatch({
+          type: SET_CURRENT_USER,
+          payload: { user: JSON.parse(userDetails), token: userToken },
+        });
         return;
       } else {
         logOut();
@@ -68,6 +74,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       password
     );
     await AsyncStorage.setItem('userToken', token);
+    await AsyncStorage.setItem('user', JSON.stringify(user));
     setAuthHeaderToken(token);
     dispatch({ type: SET_CURRENT_USER, payload: { user, token } });
   };
@@ -79,6 +86,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       name,
     });
     await AsyncStorage.setItem('userToken', token);
+    await AsyncStorage.setItem('user', JSON.stringify(user));
     setAuthHeaderToken(token);
     dispatch({ type: SET_CURRENT_USER, payload: { user, token } });
   };
@@ -87,6 +95,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     try {
       removeAuthHeaderToken();
       await AsyncStorage.removeItem('userToken');
+      await AsyncStorage.removeItem('user');
       dispatch({ type: SET_AUTH_LOGOUT });
     } catch (error) {
       throw new Error(error);
