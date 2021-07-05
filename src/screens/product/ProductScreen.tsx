@@ -18,7 +18,6 @@ import {
   Share,
   TouchableOpacity,
   View,
-  Alert,
 } from 'react-native';
 
 interface RouteParams {
@@ -28,7 +27,7 @@ interface RouteParams {
 const ProductScreen = () => {
   const { showToast } = useToast();
   const { isAuthenticated } = useAuth();
-  const { addCart } = useCart();
+  const { addCartItem } = useCart();
 
   const route = useRoute<RouteProp<Record<string, RouteParams>, string>>();
   const navigation = useNavigation();
@@ -116,7 +115,7 @@ const ProductScreen = () => {
     }
     if (!product) return;
     try {
-      await addCart(qty, product);
+      await addCartItem(product, qty);
       showToast('success', 'Successfully added to your cart');
     } catch (error) {
       showToast('error', 'Error in adding cart. Please try again later');

@@ -1,12 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 import { useCart } from '@/contexts';
 import { colors } from '@/theme';
 import calculateCartTotal from '@/utils/cart';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 const CartSubTotal = () => {
-  const { carts } = useCart();
-  const { cartTotal } = calculateCartTotal(carts);
+  const { cartItems } = useCart();
+  const { cartTotal } = calculateCartTotal(cartItems);
 
   return (
     <View style={styles.subTotal}>

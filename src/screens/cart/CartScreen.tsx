@@ -9,7 +9,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const CartScreen = () => {
   const { isAuthenticated } = useAuth();
-  const { carts } = useCart();
+  const { cartItems } = useCart();
   const navigation = useNavigation();
 
   if (!isAuthenticated) {
@@ -25,7 +25,7 @@ const CartScreen = () => {
     );
   }
 
-  if (carts.length === 0) {
+  if (cartItems.length === 0) {
     return (
       <View style={styles.wrapper}>
         <Text style={styles.emptyText}> Your Cart is empty :( </Text>

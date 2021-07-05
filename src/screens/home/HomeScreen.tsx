@@ -43,7 +43,7 @@ const HomeScreen = () => {
       try {
         setLoadingCategories(true);
         const results = await CategoryService.getCategories();
-        setCategories(results.categories);
+        setCategories(results);
       } catch (error) {
         console.log(error);
       } finally {
@@ -58,7 +58,7 @@ const HomeScreen = () => {
       try {
         setLoadingCategories(true);
         const results = await BannerService.getBanners();
-        setBanners(results.banners);
+        setBanners(results);
       } catch (error) {
         console.log(error);
       } finally {

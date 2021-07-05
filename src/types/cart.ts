@@ -1,12 +1,11 @@
 import { Product } from './product';
 
-export type AddCart = {
-  quantity: number;
-  product: Product;
-};
-
-export type Cart = {
+export interface CartItem {
   _id: string;
   quantity: number;
   product: Product;
-};
+}
+
+export interface Cart {
+  items: CartItem[];
+}

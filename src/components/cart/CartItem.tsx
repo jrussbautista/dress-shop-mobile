@@ -3,7 +3,7 @@ import { Button } from '@/components/ui';
 import { useCart } from '@/contexts';
 import navigationNames from '@/navigation/navigationNames';
 import { colors } from '@/theme';
-import { Cart } from '@/types';
+import { CartItem as CartItemType } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
@@ -16,15 +16,15 @@ import {
 } from 'react-native';
 
 interface Props {
-  cart: Cart;
+  cartItem: CartItemType;
 }
 
-const CartItem: React.FC<Props> = ({ cart }) => {
+const CartItem: React.FC<Props> = ({ cartItem }) => {
   const navigation = useNavigation();
 
-  const { removeCart, updateCartQuantity } = useCart();
+  const { removeCartItem, updateCartItemQty } = useCart();
 
-  const [qty, setQty] = useState(cart.quantity);
+  const [qty, setQty] = useState(cartItem.quantity);
   const [updating, setUpdating] = useState(false);
 
   const handleNavigate = (id: string) => {
@@ -34,17 +34,15 @@ const CartItem: React.FC<Props> = ({ cart }) => {
   const handleRemoveCart = async (id: string) => {
     try {
       setUpdating(true);
-      await removeCart(id);
+      await removeCartItem(cartItem);
     } catch (error) {
       Alert.alert('Error', error.message);
-    } finally {
-      setUpdating(false);
     }
   };
 
   const updateAsyncCartQty = async (quantity: number) => {
     try {
-      await updateCartQuantity(cart._id, quantity);
+      await updateCartItemQty(cartItem, quantity);
     } catch (error) {
       console.log(error.message);
     }
@@ -73,16 +71,19 @@ const CartItem: React.FC<Props> = ({ cart }) => {
   };
 
   return (
-    <View key={cart._id} style={styles.cartItem}>
-      <TouchableOpacity onPress={() => handleNavigate(cart.product._id)}>
-        <Image source={{ uri: cart.product.imageURL }} style={styles.image} />
+    <View key={cartItem._id} style={styles.cartItem}>
+      <TouchableOpacity onPress={() => handleNavigate(cartItem.product._id)}>
+        <Image
+          source={{ uri: cartItem.product.imageURL }}
+          style={styles.image}
+        />
       </TouchableOpacity>
       <View style={styles.info}>
-        <TouchableOpacity onPress={() => handleNavigate(cart.product._id)}>
-          <Text style={styles.title}> {cart.product.name} </Text>
+        <TouchableOpacity onPress={() => handleNavigate(cartItem.product._id)}>
+          <Text style={styles.title}> {cartItem.product.name} </Text>
         </TouchableOpacity>
-        <Text style={styles.price}> P{cart.product.price}</Text>
-        <Text> x {cart.quantity}</Text>
+        <Text style={styles.price}> P{cartItem.product.price}</Text>
+        <Text> x {cartItem.quantity}</Text>
         <View style={styles.inputQty}>
           <ProductInputQuantity
             value={qty}
@@ -94,7 +95,7 @@ const CartItem: React.FC<Props> = ({ cart }) => {
         <Button
           title="Remove"
           style={styles.btn}
-          onPress={() => handleRemoveCart(cart._id)}
+          onPress={() => handleRemoveCart(cartItem._id)}
         />
       </View>
     </View>

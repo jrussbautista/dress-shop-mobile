@@ -1,16 +1,17 @@
+import { useCart } from '@/contexts';
 import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
+
 import CartItem from './CartItem';
-import { useCart } from '@/contexts';
 
 const CartList: React.FC = () => {
-  const { carts } = useCart();
+  const { cartItems } = useCart();
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={carts}
-        renderItem={(item) => <CartItem cart={item.item} />}
+        data={cartItems}
+        renderItem={(item) => <CartItem cartItem={item.item} />}
         keyExtractor={(item) => item._id}
       />
     </View>

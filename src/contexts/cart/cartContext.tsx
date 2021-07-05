@@ -1,5 +1,5 @@
 import { CartService } from '@/services';
-import { Cart, Product } from '@/types';
+import { CartItem, Product } from '@/types';
 import React, {
   createContext,
   useContext,
@@ -15,79 +15,83 @@ import {
   REMOVE_CART,
   SET_CART,
   UPDATE_QTY_CART,
+  SET_CART_ERROR,
 } from './cartConstants';
 import reducer from './cartReducer';
 
 interface InitialStateType {
-  carts: Cart[];
-  cartsNum: number;
-  addCart: (qty: number, product: Product) => void;
-  removeCart: (cartId: string) => void;
+  cartItems: CartItem[];
+  loading: boolean;
+  error: null | string;
+  addCartItem: (product: Product, quantity: number) => void;
+  removeCartItem: (cartItemToRemove: CartItem) => void;
   clearCart: () => void;
-  updateCartQuantity: (cartId: string, qty: number) => void;
+  updateCartItemQty: (cartItem: CartItem, newQuantity: number) => void;
 }
 
 export const CartContext = createContext<InitialStateType>({
-  carts: [],
-  cartsNum: 0,
-  addCart: () => null,
-  removeCart: () => null,
+  cartItems: [],
+  loading: true,
+  error: null,
+  addCartItem: () => null,
+  removeCartItem: () => null,
   clearCart: () => null,
-  updateCartQuantity: () => null,
+  updateCartItemQty: () => null,
 });
 
 export const CartProvider: React.FC = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
   const initialState = {
-    carts: [],
-    cartsNum: 0,
+    cartItems: [],
     loading: true,
+    error: null,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    const fetchCarts = async () => {
-      try {
-        const { carts } = await CartService.fetchCarts();
-        dispatch({ type: SET_CART, payload: carts });
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
+  const fetchCarts = async () => {
+    try {
+      const results = await CartService.getCart();
+      dispatch({ type: SET_CART, payload: results.items });
+    } catch (error) {
+      dispatch({ type: SET_CART_ERROR, payload: { error: error.message } });
+    }
+  };
 
+  useEffect(() => {
     if (isAuthenticated) {
       fetchCarts();
     }
   }, [isAuthenticated]);
 
-  const addCart = async (qty: number, product: Product) => {
-    await CartService.addCart(qty, product._id);
-    dispatch({ type: ADD_CART, payload: { product } });
+  const addCartItem = async (product: Product, quantity: number) => {
+    const results = await CartService.addCartItem(quantity, product._id);
+    const cartItem: CartItem = { _id: results._id, quantity, product };
+    dispatch({ type: ADD_CART, payload: cartItem });
   };
 
-  const removeCart = async (cartId: string) => {
-    await CartService.removeCart(cartId);
-    dispatch({ type: REMOVE_CART, payload: { id: cartId } });
+  const removeCartItem = async (cartItem: CartItem) => {
+    await CartService.removeCartItem(cartItem.product._id);
+    dispatch({ type: REMOVE_CART, payload: cartItem });
+  };
+
+  const updateCartItemQty = async (cartItem: CartItem, newQuantity: number) => {
+    await CartService.updateQuantityCarItem(cartItem.product._id, newQuantity);
+    dispatch({ type: UPDATE_QTY_CART, payload: { cartItem, newQuantity } });
   };
 
   const clearCart = () => {
     dispatch({ type: CLEAR_CART });
   };
 
-  const updateCartQuantity = async (cartId: string, quantity: number) => {
-    await CartService.updateCart(cartId, quantity);
-    dispatch({ type: UPDATE_QTY_CART, payload: { id: cartId, quantity } });
-  };
-
   const value = useMemo(
     () => ({
       ...state,
-      addCart,
-      removeCart,
+      addCartItem,
+      removeCartItem,
       clearCart,
-      updateCartQuantity,
+      updateCartItemQty,
     }),
     [state]
   );

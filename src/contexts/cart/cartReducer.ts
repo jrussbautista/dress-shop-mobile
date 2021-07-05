@@ -1,4 +1,4 @@
-import { Cart } from '@/types';
+import { CartItem } from '@/types';
 
 import {
   ADD_CART,
@@ -6,11 +6,19 @@ import {
   SET_CART,
   CLEAR_CART,
   UPDATE_QTY_CART,
+  SET_CART_ERROR,
 } from './cartConstants';
 
+import {
+  addCartItemToCart,
+  removeCartItemToCart,
+  updateCartItemQuantityToCart,
+} from './cartUtils';
+
 type State = {
-  carts: Cart[];
-  cartsNum: number;
+  cartItems: CartItem[];
+  loading: boolean;
+  error: null | string;
 };
 
 type Action = {
@@ -21,45 +29,42 @@ type Action = {
 export default (state: State, action: Action): State => {
   switch (action.type) {
     case CLEAR_CART:
-      return { ...state, carts: [], cartsNum: 0 };
+      return { ...state, cartItems: [] };
     case SET_CART:
       return {
         ...state,
-        carts: action.payload,
-        cartsNum: action.payload.length,
+        cartItems: action.payload,
+        loading: false,
+        error: null,
       };
     case ADD_CART: {
-      // check if new added cart is exist on cart
-      const isCartExist = state.carts.some(
-        (cart) => cart.product._id === action.payload.product._id
-      );
-
-      if (isCartExist) {
-        return state;
-      } else {
-        return {
-          ...state,
-          carts: [...state.carts, action.payload],
-          cartsNum: state.cartsNum + 1,
-        };
-      }
+      return {
+        ...state,
+        cartItems: addCartItemToCart(state.cartItems, action.payload),
+      };
     }
     case REMOVE_CART: {
-      const filteredCarts = state.carts.filter(
-        (cart) => cart._id !== action.payload.id
-      );
-      return { ...state, carts: filteredCarts, cartsNum: state.cartsNum - 1 };
+      return {
+        ...state,
+        cartItems: removeCartItemToCart(state.cartItems, action.payload),
+      };
     }
 
     case UPDATE_QTY_CART: {
-      const updatedCarts = state.carts.map((cart) =>
-        cart._id === action.payload.id
-          ? { ...cart, quantity: action.payload.quantity }
-          : cart
-      );
-
-      return { ...state, carts: updatedCarts };
+      return {
+        ...state,
+        cartItems: updateCartItemQuantityToCart(
+          state.cartItems,
+          action.payload.cartItem,
+          action.payload.newQuantity
+        ),
+      };
     }
+
+    case SET_CART_ERROR: {
+      return { ...state, error: action.payload.error, loading: false };
+    }
+
     default:
       return state;
   }

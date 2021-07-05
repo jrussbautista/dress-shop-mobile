@@ -1,3 +1,4 @@
+import { useAuth, useCart } from '@/contexts';
 import {
   HomeScreen,
   SearchScreen,
@@ -8,14 +9,13 @@ import {
   ChangePasswordScreen,
   OrdersScreen,
 } from '@/screens';
+import { colors } from '@/theme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
 import { tabScreenOptions } from './NavigationHelper';
-import { colors } from '@/theme';
 import navigationNames from './navigationNames';
-import { useAuth, useCart } from '@/contexts';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -100,12 +100,14 @@ const HomeTabNavigator = () => {
   }
 
   const { isAuthenticated } = useAuth();
-  const { cartsNum } = useCart();
+  const { cartItems } = useCart();
 
   let cartTabOptions: CartTabOptions = {};
 
-  if (cartsNum > 0) {
-    cartTabOptions = { tabBarBadge: cartsNum };
+  const cartItemsNum = cartItems.length;
+
+  if (cartItemsNum > 0) {
+    cartTabOptions = { tabBarBadge: cartItemsNum };
   }
 
   return (
