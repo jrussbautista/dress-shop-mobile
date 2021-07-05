@@ -11,7 +11,7 @@ import { ProductService } from '@/services';
 import { Product, Products } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   Animated,
   StyleSheet,
@@ -47,31 +47,6 @@ const ProductScreen = () => {
     extrapolate: 'clamp',
   });
 
-  navigation.setOptions({
-    title: product ? product.name : '',
-    headerTransparent: true,
-    headerTitleAlign: 'center',
-    headerTitleStyle: { opacity },
-    headerBackground: () => (
-      <Animated.View
-        style={[StyleSheet.absoluteFill, styles.headerView, { opacity }]}
-      />
-    ),
-    headerRight: () => (
-      <TouchableOpacity
-        style={styles.headerRight}
-        onPress={() => {
-          Share.share({
-            title: product?.name,
-            message: product ? product.description : '',
-          });
-        }}
-      >
-        <Ionicons name="md-share" size={24} />
-      </TouchableOpacity>
-    ),
-  });
-
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -87,6 +62,33 @@ const ProductScreen = () => {
     };
     fetchProduct();
   }, [productId]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: product ? product.name : '',
+      headerTransparent: true,
+      headerTitleAlign: 'center',
+      headerTitleStyle: { opacity },
+      headerBackground: () => (
+        <Animated.View
+          style={[StyleSheet.absoluteFill, styles.headerView, { opacity }]}
+        />
+      ),
+      headerRight: () => (
+        <TouchableOpacity
+          style={styles.headerRight}
+          onPress={() => {
+            Share.share({
+              title: product?.name,
+              message: product ? product.description : '',
+            });
+          }}
+        >
+          <Ionicons name="md-share" size={24} />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, product, isLoading, relatedProducts]);
 
   const handleButtonClickQty = (method: string) => {
     if (method === 'add') {

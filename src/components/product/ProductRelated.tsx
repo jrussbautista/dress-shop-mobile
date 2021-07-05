@@ -1,9 +1,10 @@
+import { Heading } from '@/components/ui';
+import navigationNames from '@/navigation/navigationNames';
+import { Products } from '@/types';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Products } from '@/types';
-import { Heading } from '@/components/ui';
+
 import ProductList from './ProductList';
-import navigationNames from '@/navigation/navigationNames';
 
 interface Props {
   products: Products;
@@ -12,7 +13,7 @@ interface Props {
 const ProductRelated: React.FC<Props> = ({ products }) => {
   return (
     <View style={styles.container}>
-      <Heading title="Related Product" />
+      <Heading title="Related Products" />
       <ProductList
         routeName={navigationNames.productHomeScreenTab}
         products={products}
@@ -25,6 +26,6 @@ export default ProductRelated;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    padding: 10,
   },
 });

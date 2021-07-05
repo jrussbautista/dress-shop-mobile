@@ -1,6 +1,7 @@
+import { Product } from '@/types';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Product } from '@/types';
+
 import ProductItem from './ProductItem';
 
 interface Props {
@@ -28,6 +29,6 @@ const styles = StyleSheet.create({
   products: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    marginHorizontal: -5,
   },
 });

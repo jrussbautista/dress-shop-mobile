@@ -1,15 +1,8 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import { colors } from '@/theme';
 import { Product } from '@/types';
 import { useNavigation } from '@react-navigation/native';
-import { colors } from '@/theme';
+import React from 'react';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 interface Props {
   product: Product;
@@ -27,15 +20,17 @@ const ProductItem: React.FC<Props> = ({ product, routeName }) => {
 
   return (
     <TouchableOpacity onPress={handleNavigate} style={styles.list}>
-      <Image source={{ uri: product.imageURL }} style={styles.listImg} />
-      <View style={styles.info}>
-        <View>
-          <Text style={styles.name} numberOfLines={2}>
-            {product.name}
-          </Text>
-        </View>
-        <View>
-          <Text style={styles.price}>P{product.price}</Text>
+      <View style={styles.listContent}>
+        <Image source={{ uri: product.imageURL }} style={styles.listImg} />
+        <View style={styles.info}>
+          <View>
+            <Text style={styles.name} numberOfLines={2}>
+              {product.name}
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.price}>P{product.price}</Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -44,16 +39,17 @@ const ProductItem: React.FC<Props> = ({ product, routeName }) => {
 
 export default ProductItem;
 
-let width = Dimensions.get('screen').width / 2 - 22;
-
 const styles = StyleSheet.create({
   list: {
-    width: width,
+    width: '50%',
     marginBottom: 15,
   },
+  listContent: {
+    marginHorizontal: 5,
+  },
   listImg: {
-    width: width,
-    height: width,
+    width: '100%',
+    height: 200,
   },
   info: {
     padding: 5,
