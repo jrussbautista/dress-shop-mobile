@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, PageLoader } from '@/components/ui';
 import { useToast } from '@/contexts';
 import { AuthService } from '@/services';
 import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 
 const ChangePasswordScreen = () => {
   const { showToast } = useToast();
@@ -61,19 +61,19 @@ const ChangePasswordScreen = () => {
         placeholder="Old Password"
         value={password.oldPassword}
         onChangeText={(val) => handleChange('oldPassword', val)}
-        secureTextEntry={true}
+        secureTextEntry
       />
       <TextInput
         placeholder="New Password"
         onChangeText={(val) => handleChange('newPassword', val)}
         value={password.newPassword}
-        secureTextEntry={true}
+        secureTextEntry
       />
       <TextInput
         placeholder="Confirm New Password"
         onChangeText={(val) => handleChange('confirmNewPassword', val)}
         value={password.confirmNewPassword}
-        secureTextEntry={true}
+        secureTextEntry
       />
       <View style={styles.bottomContainer}>
         <Button title="Save" onPress={handleSubmit} disabled={submitting} />

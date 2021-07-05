@@ -1,19 +1,18 @@
+import { TextInput, Button, PageLoader } from '@/components/ui';
+import { useAuth, useToast } from '@/contexts';
+import { AuthService } from '@/services';
+import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import Constants from 'expo-constants';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
-  Text,
 } from 'react-native';
-import { AuthService } from '@/services';
-import { useAuth, useToast } from '@/contexts';
-import { TextInput, Button, PageLoader } from '@/components/ui';
-import { Feather } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import Constants from 'expo-constants';
-import * as Permissions from 'expo-permissions';
-import { useNavigation } from '@react-navigation/native';
 
 const EditProfileScreen = () => {
   const { currentUser, updateCurrentUser } = useAuth();
@@ -35,11 +34,11 @@ const EditProfileScreen = () => {
     }
     try {
       setUpdating(true);
-      const { user } = await AuthService.updateProfile(
+      const results = await AuthService.updateProfile(
         currentUser?._id,
         userInfo
       );
-      updateCurrentUser(user);
+      updateCurrentUser(results);
       showToast('success', 'Successfully profile updated');
       navigation.goBack();
     } catch (error) {

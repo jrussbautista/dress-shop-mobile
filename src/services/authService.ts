@@ -22,10 +22,12 @@ interface UserFields {
 const getMe = async (): Promise<UserData> => {
   try {
     const { data } = await apiClient.get(`/auth/me`);
+
     const userData: UserData = {
       token: data.data.token,
       user: data.data.user,
     };
+
     return userData;
   } catch (error) {
     throw new Error(catchError(error));
@@ -42,7 +44,7 @@ const verifyGoogleIdToken = async (idToken: string): Promise<UserData> => {
     };
     return userData;
   } catch (error) {
-    return Promise.reject(error);
+    throw new Error(catchError(error));
   }
 };
 
@@ -54,7 +56,6 @@ const login = async (email: string, password: string): Promise<UserData> => {
       user: data.data.user,
       token: data.data.token,
     };
-
     return userData;
   } catch (error) {
     throw new Error(catchError(error));
@@ -102,18 +103,14 @@ export const changePassword = async (
 export const updateProfile = async (
   userId: string,
   userFields: UserFields
-): Promise<{ user: User }> => {
+): Promise<User> => {
   try {
     const url = `/users/${userId}`;
     const { data } = await apiClient.patch(url, userFields, {
       params: { id: userId },
     });
 
-    const userData: { user: User } = {
-      user: data.data.user,
-    };
-
-    return userData;
+    return data.data;
   } catch (error) {
     throw new Error(catchError(error));
   }
