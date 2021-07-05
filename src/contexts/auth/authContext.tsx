@@ -20,6 +20,7 @@ interface InitialStateType {
   signUp(email: string, password: string, name: string): void;
   logOut(): void;
   updateCurrentUser(user: User): void;
+  setCurrentUser(user: User, token: string): void;
 }
 
 const AuthContext = createContext<InitialStateType>({
@@ -30,6 +31,7 @@ const AuthContext = createContext<InitialStateType>({
   signUp: (email: string, password: string, name: string) => {},
   logOut: () => {},
   updateCurrentUser: (user: User) => {},
+  setCurrentUser: (user: User, token: string) => {},
 });
 
 export const AuthProvider: React.FC = ({ children }) => {
@@ -68,15 +70,19 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   };
 
+  const setCurrentUser = async (user: User, token: string) => {
+    await AsyncStorage.setItem('userToken', token);
+    await AsyncStorage.setItem('user', JSON.stringify(user));
+    setAuthHeaderToken(token);
+    dispatch({ type: SET_CURRENT_USER, payload: { user, token } });
+  };
+
   const login = async (email: string, password: string) => {
     const { user, token } = await AuthService.login(
       email.toLowerCase(),
       password
     );
-    await AsyncStorage.setItem('userToken', token);
-    await AsyncStorage.setItem('user', JSON.stringify(user));
-    setAuthHeaderToken(token);
-    dispatch({ type: SET_CURRENT_USER, payload: { user, token } });
+    setCurrentUser(user, token);
   };
 
   const signUp = async (email: string, password: string, name: string) => {
@@ -108,7 +114,14 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ ...state, login, signUp, logOut, updateCurrentUser }}
+      value={{
+        ...state,
+        login,
+        signUp,
+        logOut,
+        updateCurrentUser,
+        setCurrentUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

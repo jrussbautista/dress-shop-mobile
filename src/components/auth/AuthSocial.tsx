@@ -1,15 +1,15 @@
+import { PageLoader } from '@/components/ui';
+import { GOOGLE_ANDROID_DEV_CLIENT_ID } from '@/constants';
+import { useAuth, useToast } from '@/contexts';
+import navigationNames from '@/navigation/navigationNames';
+import { AuthService } from '@/services';
+import { useNavigation } from '@react-navigation/native';
+import * as Google from 'expo-google-app-auth';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import * as Google from 'expo-google-app-auth';
-import { GOOGLE_ANDROID_DEV_CLIENT_ID } from '@/constants';
-import { AuthService } from '@/services';
-import { useAuth, useToast } from '@/contexts';
-import { useNavigation } from '@react-navigation/native';
-import navigationNames from '@/navigation/navigationNames';
-import { PageLoader } from '@/components/ui';
 
 const AuthSocial = () => {
-  const { login } = useAuth();
+  const { setCurrentUser } = useAuth();
   const { showToast } = useToast();
   const navigation = useNavigation();
   const [isVerifying, setIsVerifying] = useState(false);
@@ -25,9 +25,9 @@ const AuthSocial = () => {
       });
 
       if (result.type === 'success') {
-        const idToken = result.idToken;
+        const idToken = result.idToken as string;
         const { user, token } = await AuthService.verifyGoogleIdToken(idToken);
-        login(user, token);
+        await setCurrentUser(user, token);
         navigation.navigate(navigationNames.profileTab);
       }
     } catch ({ message }) {
