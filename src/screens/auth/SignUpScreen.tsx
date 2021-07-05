@@ -92,7 +92,6 @@ const SignUpScreen = () => {
               <TextInput
                 label="Password"
                 style={styles.input}
-                secureTextEntry={true}
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
                 value={values.password}
@@ -106,7 +105,7 @@ const SignUpScreen = () => {
               </ErrorMessage>
             </View>
             <View style={styles.group}>
-              <Button title="Log In" onPress={handleSubmit} />
+              <Button title="Sign Up" onPress={handleSubmit} />
             </View>
           </>
         )}
