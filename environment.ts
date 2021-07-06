@@ -4,8 +4,8 @@ const ENV = {
       '421746734282-0ffu9dgc6sjaiooo9pqvis8c8llh4npq.apps.googleusercontent.com',
   },
   prod: {
-    googleAndroidDevClientId: '',
-    // Add other keys you want here
+    googleAndroidDevClientId:
+      '421746734282-vvmkdjvmmk7p96nrdcead4i69hpbehhg.apps.googleusercontent.com',
   },
 };
 

@@ -17,6 +17,16 @@
     "androidStatusBar": {
       "barStyle": "light-content"
     },
+    "android": {
+      "package": "com.jamesrussel.dress_shop",
+      "versionCode": 1,
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyC8kHlAEtCLeU5_KTeuvOYJNytEHJwJAco",
+          "certificateHash": "6E:BA:14:E0:05:E7:40:5E:CF:58:57:33:00:A2:0B:8B:07:04:88:A2"
+        }
+      }
+    },
     "ios": {
       "supportsTablet": true
     },

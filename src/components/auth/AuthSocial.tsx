@@ -1,5 +1,5 @@
 import { PageLoader } from '@/components/ui';
-import { GOOGLE_ANDROID_DEV_CLIENT_ID } from '@/constants';
+import { GOOGLE_ANDROID_CLIENT_ID } from '@/constants';
 import { useAuth, useToast } from '@/contexts';
 import navigationNames from '@/navigation/navigationNames';
 import { AuthService } from '@/services';
@@ -19,7 +19,7 @@ const AuthSocial = () => {
       setIsVerifying(true);
       const result = await Google.logInAsync({
         behavior: 'web',
-        androidClientId: GOOGLE_ANDROID_DEV_CLIENT_ID,
+        androidClientId: GOOGLE_ANDROID_CLIENT_ID,
         scopes: ['profile', 'email'],
         androidStandaloneAppClientId: '',
       });

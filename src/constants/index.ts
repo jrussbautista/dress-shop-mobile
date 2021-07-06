@@ -10,4 +10,4 @@ export const API_URL = IS_PROD
 export const PAGE_LIMIT = 12;
 export const PAGE = 1;
 
-export const GOOGLE_ANDROID_DEV_CLIENT_ID = env.googleAndroidDevClientId;
+export const GOOGLE_ANDROID_CLIENT_ID = env.googleAndroidDevClientId;
