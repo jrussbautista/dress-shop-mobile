@@ -4,6 +4,7 @@ import { useCart } from '@/contexts';
 import navigationNames from '@/navigation/navigationNames';
 import { colors } from '@/theme';
 import { CartItem as CartItemType } from '@/types';
+import formatPrice from '@/utils/formatPrice';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
@@ -82,7 +83,7 @@ const CartItem: React.FC<Props> = ({ cartItem }) => {
         <TouchableOpacity onPress={() => handleNavigate(cartItem.product._id)}>
           <Text style={styles.title}> {cartItem.product.name} </Text>
         </TouchableOpacity>
-        <Text style={styles.price}> P{cartItem.product.price}</Text>
+        <Text style={styles.price}>{formatPrice(cartItem.product.price)}</Text>
         <Text> x {cartItem.quantity}</Text>
         <View style={styles.inputQty}>
           <ProductInputQuantity

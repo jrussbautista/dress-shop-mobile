@@ -1,7 +1,8 @@
-import React from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
 import { colors } from '@/theme';
 import { Product } from '@/types';
+import formatPrice from '@/utils/formatPrice';
+import React from 'react';
+import { View, Image, Text, StyleSheet } from 'react-native';
 
 interface Props {
   product: Product;
@@ -15,7 +16,7 @@ const ProductInfo: React.FC<Props> = ({ product }) => {
       </View>
       <View style={styles.info}>
         <Text style={styles.name}> {product.name}</Text>
-        <Text style={styles.price}>P{product.price}</Text>
+        <Text style={styles.price}>{formatPrice(product.price)}</Text>
         <Text style={styles.desc}>{product.description}</Text>
       </View>
     </>

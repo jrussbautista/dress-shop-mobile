@@ -1,6 +1,7 @@
 import { useCart } from '@/contexts';
 import { colors } from '@/theme';
 import calculateCartTotal from '@/utils/cart';
+import formatPrice from '@/utils/formatPrice';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -11,7 +12,7 @@ const CartSubTotal = () => {
   return (
     <View style={styles.subTotal}>
       <Text> Sub Total: </Text>
-      <Text style={styles.price}> P{cartTotal} </Text>
+      <Text style={styles.price}>{formatPrice(cartTotal)} </Text>
     </View>
   );
 };

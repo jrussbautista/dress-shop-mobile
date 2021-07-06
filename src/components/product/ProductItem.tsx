@@ -1,5 +1,6 @@
 import { colors } from '@/theme';
 import { Product } from '@/types';
+import formatPrice from '@/utils/formatPrice';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
@@ -29,7 +30,7 @@ const ProductItem: React.FC<Props> = ({ product, routeName }) => {
             </Text>
           </View>
           <View>
-            <Text style={styles.price}>P{product.price}</Text>
+            <Text style={styles.price}>{formatPrice(product.price)}</Text>
           </View>
         </View>
       </View>

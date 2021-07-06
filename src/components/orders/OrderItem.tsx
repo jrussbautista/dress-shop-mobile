@@ -1,7 +1,8 @@
 import navigationNames from '@/navigation/navigationNames';
 import { colors } from '@/theme';
 import { Order } from '@/types';
-import { formatPrice, formatDate } from '@/utils/helpers';
+import formatPrice from '@/utils/formatPrice';
+import { formatDate } from '@/utils/helpers';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
