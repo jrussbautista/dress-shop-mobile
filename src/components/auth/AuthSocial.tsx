@@ -21,7 +21,7 @@ const AuthSocial = () => {
         behavior: 'web',
         androidClientId: GOOGLE_ANDROID_CLIENT_ID,
         scopes: ['profile', 'email'],
-        androidStandaloneAppClientId: '',
+        androidStandaloneAppClientId: GOOGLE_ANDROID_CLIENT_ID,
       });
 
       if (result.type === 'success') {
