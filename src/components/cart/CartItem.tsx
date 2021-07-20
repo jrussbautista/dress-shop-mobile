@@ -29,7 +29,7 @@ const CartItem: React.FC<Props> = ({ cartItem }) => {
   const [updating, setUpdating] = useState(false);
 
   const handleNavigate = (id: string) => {
-    navigation.navigate(navigationNames.productCartScreenTab, { id });
+    navigation.navigate(navigationNames.productScreen, { id });
   };
 
   const handleRemoveCart = async (id: string) => {

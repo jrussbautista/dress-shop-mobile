@@ -1,16 +1,16 @@
-import { AuthService } from '@/services/authService';
+import { AuthService } from '@/services/AuthService';
 import { User } from '@/types';
 import { setAuthHeaderToken, removeAuthHeaderToken } from '@/utils/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
+import reducer from './auth-reducer';
 import {
   SET_CURRENT_USER,
   SET_AUTH_ERROR,
   SET_AUTH_LOGOUT,
   UPDATE_CURRENT_USER,
-} from './authConstants';
-import reducer from './authReducer';
+} from './auth-types';
 
 interface InitialStateType {
   currentUser: User | null;

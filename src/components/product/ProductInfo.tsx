@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    paddingTop: 15,
   },
   price: {
     color: colors.primary,

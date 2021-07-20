@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "Dress Shop App",
-    "slug": "dressApp",
+    "name": "Dress Shop",
+    "slug": "dress-shop",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -18,13 +18,16 @@
       "barStyle": "light-content"
     },
     "android": {
-      "package": "com.jamesrussel.dress_shop",
+      "package": "com.jamesrussel.dressshop",
       "versionCode": 1,
       "config": {
         "googleSignIn": {
           "apiKey": "AIzaSyC8kHlAEtCLeU5_KTeuvOYJNytEHJwJAco",
-          "certificateHash": "6E:BA:14:E0:05:E7:40:5E:CF:58:57:33:00:A2:0B:8B:07:04:88:A2"
+          "certificateHash": "26:76:AB:32:2E:B4:46:FD:EC:31:E1:04:78:37:49:E6:57:26:03:90"
         }
+      },
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png"
       }
     },
     "ios": {

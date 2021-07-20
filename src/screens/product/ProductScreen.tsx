@@ -1,3 +1,4 @@
+import CartButton from '@/components/cart/CartButton';
 import {
   ProductInputQuantity,
   ProductInfo,
@@ -5,20 +6,14 @@ import {
   ProductSkeleton,
 } from '@/components/product';
 import { Button, ErrorMessage } from '@/components/ui';
+import { WishlistButton } from '@/components/wishlist';
 import { useAuth, useCart, useToast } from '@/contexts';
 import navigationNames from '@/navigation/navigationNames';
 import { ProductService } from '@/services';
 import { Product, Products } from '@/types';
-import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import {
-  Animated,
-  StyleSheet,
-  Share,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Animated, StyleSheet, View, StatusBar } from 'react-native';
 
 interface RouteParams {
   id: string;
@@ -74,19 +69,7 @@ const ProductScreen = () => {
           style={[StyleSheet.absoluteFill, styles.headerView, { opacity }]}
         />
       ),
-      headerRight: () => (
-        <TouchableOpacity
-          style={styles.headerRight}
-          onPress={() => {
-            Share.share({
-              title: product?.name,
-              message: product ? product.description : '',
-            });
-          }}
-        >
-          <Ionicons name="md-share" size={24} />
-        </TouchableOpacity>
-      ),
+      headerRight: () => <CartButton />,
     });
   }, [navigation, product, isLoading, relatedProducts]);
 
@@ -135,29 +118,35 @@ const ProductScreen = () => {
   }
 
   return (
-    <Animated.ScrollView
-      scrollEventThrottle={16}
-      onScroll={Animated.event(
-        [{ nativeEvent: { contentOffset: { y: animation } } }],
-        { useNativeDriver: true }
-      )}
-    >
-      <ProductInfo product={product} />
-      <View style={styles.productAction}>
-        <ProductInputQuantity
-          value={qty}
-          handleButtonPressed={handleButtonClickQty}
-          onChangeText={handleChangeQty}
-        />
-        <Button
-          title="Add to Cart"
-          type="primary"
-          style={styles.btnAddCart}
-          onPress={handleAddToCart}
-        />
+    <>
+      <StatusBar />
+      <View style={styles.main}>
+        <Animated.ScrollView
+          scrollEventThrottle={16}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: animation } } }],
+            { useNativeDriver: true }
+          )}
+        >
+          <ProductInfo product={product} />
+          <ProductRelated products={relatedProducts} />
+        </Animated.ScrollView>
+        <View style={styles.bottom}>
+          <ProductInputQuantity
+            value={qty}
+            handleButtonPressed={handleButtonClickQty}
+            onChangeText={handleChangeQty}
+          />
+          <Button
+            title="Add to Cart"
+            type="primary"
+            style={styles.btnAddCart}
+            onPress={handleAddToCart}
+          />
+          <WishlistButton productId={product._id} />
+        </View>
       </View>
-      <ProductRelated products={relatedProducts} />
-    </Animated.ScrollView>
+    </>
   );
 };
 
@@ -170,13 +159,21 @@ const styles = StyleSheet.create({
   headerRight: {
     paddingHorizontal: 15,
   },
-  productAction: {
-    paddingHorizontal: 15,
-    flexDirection: 'row',
-  },
+
   btnAddCart: {
-    marginHorizontal: 10,
+    marginHorizontal: 15,
     borderRadius: 50,
     width: 150,
+  },
+  main: {
+    flex: 1,
+  },
+  bottom: {
+    backgroundColor: '#fff',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: 70,
+    paddingHorizontal: 15,
   },
 });

@@ -1,12 +1,13 @@
+import { CartButton } from '@/components/cart';
 import { HomeBanners } from '@/components/home';
 import HomeCategories from '@/components/home/HomeCategories';
 import { ProductListSkeleton, ProductList } from '@/components/product';
 import { Heading } from '@/components/ui';
 import { useProducts } from '@/hooks';
-import navigationNames from '@/navigation/navigationNames';
 import { colors } from '@/theme';
 import isReachedEnd from '@/utils/reachEnd';
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useLayoutEffect } from 'react';
 import {
   ScrollView,
   RefreshControl,
@@ -30,6 +31,14 @@ const HomeScreen = () => {
     refresh,
     products,
   } = useProducts();
+
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <CartButton />,
+    });
+  }, []);
 
   const handleOnScroll = ({
     nativeEvent,
@@ -55,10 +64,7 @@ const HomeScreen = () => {
         {loadingProducts ? (
           <ProductListSkeleton />
         ) : (
-          <ProductList
-            routeName={navigationNames.productHomeScreenTab}
-            products={products}
-          />
+          <ProductList products={products} />
         )}
 
         {isLoadingMore && (

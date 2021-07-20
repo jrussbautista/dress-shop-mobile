@@ -9,3 +9,4 @@ export { default as ChangePasswordScreen } from './profile/ChangePasswordScreen'
 export { default as ProfileScreen } from './profile/ProfileScreen';
 export { default as SearchScreen } from './search';
 export { default as OrdersScreen } from './orders';
+export { default as WishlistScreen } from './wishlist';

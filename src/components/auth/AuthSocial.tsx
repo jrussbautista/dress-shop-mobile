@@ -1,5 +1,8 @@
 import { PageLoader } from '@/components/ui';
-import { GOOGLE_ANDROID_CLIENT_ID } from '@/constants';
+import {
+  GOOGLE_ANDROID_CLIENT_ID,
+  GOOGLE_ANDROID_STANDALONE_CLIENT_ID,
+} from '@/constants';
 import { useAuth, useToast } from '@/contexts';
 import navigationNames from '@/navigation/navigationNames';
 import { AuthService } from '@/services';
@@ -21,7 +24,7 @@ const AuthSocial = () => {
         behavior: 'web',
         androidClientId: GOOGLE_ANDROID_CLIENT_ID,
         scopes: ['profile', 'email'],
-        androidStandaloneAppClientId: GOOGLE_ANDROID_CLIENT_ID,
+        androidStandaloneAppClientId: GOOGLE_ANDROID_STANDALONE_CLIENT_ID,
       });
 
       if (result.type === 'success') {

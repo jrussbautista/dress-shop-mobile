@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     elevation: 999,
     alignItems: 'center',
     zIndex: 10000,
-    top: 65,
+    top: 50,
     padding: 10,
   },
   toast: {

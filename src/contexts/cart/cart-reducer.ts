@@ -7,13 +7,13 @@ import {
   CLEAR_CART,
   UPDATE_QTY_CART,
   SET_CART_ERROR,
-} from './cartConstants';
+} from './cart-types';
 
 import {
   addCartItemToCart,
   removeCartItemToCart,
   updateCartItemQuantityToCart,
-} from './cartUtils';
+} from './cart-utils';
 
 type State = {
   cartItems: CartItem[];

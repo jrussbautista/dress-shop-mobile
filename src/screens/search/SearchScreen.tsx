@@ -1,3 +1,11 @@
+import { ProductList, ProductListSkeleton } from '@/components/product';
+import { SearchForm, SearchFilterModal } from '@/components/search';
+import { useProducts } from '@/hooks';
+import { colors } from '@/theme';
+import { FilterData } from '@/types';
+import isReachedEnd from '@/utils/reachEnd';
+import { AntDesign } from '@expo/vector-icons';
+import { useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
 import React, { useState, useCallback } from 'react';
 import {
   View,
@@ -12,16 +20,6 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
-import { useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
-import { useProducts } from '@/hooks';
-import { MySafeAreaView } from '@/components/ui';
-import { ProductList, ProductListSkeleton } from '@/components/product';
-import { SearchForm, SearchFilterModal } from '@/components/search';
-import { colors } from '@/theme';
-import isReachedEnd from '@/utils/reachEnd';
-import { AntDesign } from '@expo/vector-icons';
-import { FilterData } from '@/types';
-import navigationNames from '@/navigation/navigationNames';
 
 interface RouteParams {
   category?: string;
@@ -36,7 +34,7 @@ const SPINNER_SIZE = 35;
 const SearchScreen = () => {
   const route = useRoute<RouteProp<Record<string, RouteParams>, string>>();
 
-  let payload: Payload = {};
+  const payload: Payload = {};
 
   const category = route.params?.category ? route.params.category : '';
 
@@ -109,68 +107,61 @@ const SearchScreen = () => {
   return (
     <>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <MySafeAreaView>
-          <View style={styles.container}>
-            <View style={styles.topSearchContainer}>
-              <SearchForm
-                onSubmit={handleSubmit}
-                value={searchText}
-                onChangeText={handleChangeText}
-              />
-              <TouchableOpacity
-                style={styles.filterIcon}
-                onPress={() => setIsOpenModal(true)}
-              >
-                <AntDesign name="filter" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
-
-            <ScrollView
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={refresh} />
-              }
-              onScroll={handleOnScroll}
+        <View style={styles.container}>
+          <View style={styles.topSearchContainer}>
+            <SearchForm
+              onSubmit={handleSubmit}
+              value={searchText}
+              onChangeText={handleChangeText}
+            />
+            <TouchableOpacity
+              style={styles.filterIcon}
+              onPress={() => setIsOpenModal(true)}
             >
-              <View style={styles.productContainer}>
-                {!loading && products.length === 0 && (
-                  <View style={styles.searchEmpty}>
-                    <Text style={styles.searchEmptyHeading}>
-                      No matching products.
-                    </Text>
-                    <Text style={styles.searchEmptySub}>
-                      Try a different search.
-                    </Text>
-                  </View>
-                )}
-
-                {loading ? (
-                  <ProductListSkeleton />
-                ) : (
-                  <ProductList
-                    routeName={navigationNames.productSearchScreenTab}
-                    products={products}
-                  />
-                )}
-
-                {isLoadingMore && (
-                  <View style={styles.loading}>
-                    <ActivityIndicator
-                      color={colors.primary}
-                      size={SPINNER_SIZE}
-                    />
-                  </View>
-                )}
-                {!hasLoadMore && (
-                  <View style={styles.msg}>
-                    <Text style={styles.msgText}>
-                      No more products to load.
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </ScrollView>
+              <AntDesign name="filter" size={24} color="black" />
+            </TouchableOpacity>
           </View>
-        </MySafeAreaView>
+
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+            }
+            onScroll={handleOnScroll}
+          >
+            <View style={styles.productContainer}>
+              {!loading && products.length === 0 && (
+                <View style={styles.searchEmpty}>
+                  <Text style={styles.searchEmptyHeading}>
+                    No matching products.
+                  </Text>
+                  <Text style={styles.searchEmptySub}>
+                    Try a different search.
+                  </Text>
+                </View>
+              )}
+
+              {loading ? (
+                <ProductListSkeleton />
+              ) : (
+                <ProductList products={products} />
+              )}
+
+              {isLoadingMore && (
+                <View style={styles.loading}>
+                  <ActivityIndicator
+                    color={colors.primary}
+                    size={SPINNER_SIZE}
+                  />
+                </View>
+              )}
+              {!hasLoadMore && (
+                <View style={styles.msg}>
+                  <Text style={styles.msgText}>No more products to load.</Text>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        </View>
       </TouchableWithoutFeedback>
       {isOpenModal && (
         <SearchFilterModal

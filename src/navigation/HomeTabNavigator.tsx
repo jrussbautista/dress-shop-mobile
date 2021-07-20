@@ -1,13 +1,12 @@
-import { useAuth, useCart } from '@/contexts';
+import { useAuth } from '@/contexts';
 import {
   HomeScreen,
   SearchScreen,
   ProfileScreen,
-  CartScreen,
-  ProductScreen,
   EditProfileScreen,
   ChangePasswordScreen,
   OrdersScreen,
+  WishlistScreen,
 } from '@/screens';
 import { colors } from '@/theme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -28,10 +27,6 @@ const HomeStackScreen = () => {
         component={HomeScreen}
         options={{ title: 'Dress' }}
       />
-      <Stack.Screen
-        name={navigationNames.productHomeScreenTab}
-        component={ProductScreen}
-      />
     </Stack.Navigator>
   );
 };
@@ -44,21 +39,16 @@ const SearchStackScreen = () => {
         component={SearchScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name={navigationNames.productSearchScreenTab}
-        component={ProductScreen}
-      />
     </Stack.Navigator>
   );
 };
 
-const CartStackScreen = () => {
+const WishlistStackScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name={navigationNames.cartScreen} component={CartScreen} />
       <Stack.Screen
-        name={navigationNames.productCartScreenTab}
-        component={ProductScreen}
+        name={navigationNames.wishlistScreen}
+        component={WishlistScreen}
       />
     </Stack.Navigator>
   );
@@ -86,29 +76,12 @@ const ProfileStackScreen = () => {
         component={EditProfileScreen}
         options={{ headerTitle: 'Edit Profile' }}
       />
-      <Stack.Screen
-        name={navigationNames.productProfileScreenTab}
-        component={ProductScreen}
-      />
     </Stack.Navigator>
   );
 };
 
 const HomeTabNavigator = () => {
-  interface CartTabOptions {
-    tabBarBadge?: number;
-  }
-
   const { isAuthenticated } = useAuth();
-  const { cartItems } = useCart();
-
-  let cartTabOptions: CartTabOptions = {};
-
-  const cartItemsNum = cartItems.length;
-
-  if (cartItemsNum > 0) {
-    cartTabOptions = { tabBarBadge: cartItemsNum };
-  }
 
   return (
     <Tab.Navigator
@@ -124,9 +97,8 @@ const HomeTabNavigator = () => {
         component={SearchStackScreen}
       />
       <Tab.Screen
-        name={navigationNames.cartTab}
-        component={CartStackScreen}
-        options={cartTabOptions}
+        name={navigationNames.wishlistTab}
+        component={WishlistStackScreen}
       />
       <Tab.Screen
         name={navigationNames.profileTab}

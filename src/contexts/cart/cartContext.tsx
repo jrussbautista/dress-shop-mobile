@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 
 import { useAuth } from '../auth';
+import reducer from './cart-reducer';
 import {
   ADD_CART,
   CLEAR_CART,
@@ -16,8 +17,7 @@ import {
   SET_CART,
   UPDATE_QTY_CART,
   SET_CART_ERROR,
-} from './cartConstants';
-import reducer from './cartReducer';
+} from './cart-types';
 
 interface InitialStateType {
   cartItems: CartItem[];

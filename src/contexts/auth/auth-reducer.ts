@@ -1,10 +1,11 @@
+import { User } from '@/types';
+
 import {
   SET_CURRENT_USER,
   SET_AUTH_ERROR,
   SET_AUTH_LOGOUT,
   UPDATE_CURRENT_USER,
-} from './authConstants';
-import { User } from '@/types';
+} from './auth-types';
 
 interface State {
   loading: boolean;

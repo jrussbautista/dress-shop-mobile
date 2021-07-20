@@ -1,3 +1,5 @@
+import { WishlistButton } from '@/components/wishlist';
+import navigationNames from '@/navigation/navigationNames';
 import { colors } from '@/theme';
 import { Product } from '@/types';
 import formatPrice from '@/utils/formatPrice';
@@ -7,14 +9,13 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 interface Props {
   product: Product;
-  routeName: string;
 }
 
-const ProductItem: React.FC<Props> = ({ product, routeName }) => {
+const ProductItem: React.FC<Props> = ({ product }) => {
   const navigation = useNavigation();
 
   const handleNavigate = () => {
-    navigation.navigate(routeName, {
+    navigation.navigate(navigationNames.productScreen, {
       id: product._id,
     });
   };
@@ -23,6 +24,9 @@ const ProductItem: React.FC<Props> = ({ product, routeName }) => {
     <TouchableOpacity onPress={handleNavigate} style={styles.list}>
       <View style={styles.listContent}>
         <Image source={{ uri: product.imageURL }} style={styles.listImg} />
+        <View style={styles.wishlistButtonContainer}>
+          <WishlistButton productId={product._id} />
+        </View>
         <View style={styles.info}>
           <View>
             <Text style={styles.name} numberOfLines={2}>
@@ -63,5 +67,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: colors.primary,
     fontWeight: '700',
+  },
+  wishlistButtonContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
 });

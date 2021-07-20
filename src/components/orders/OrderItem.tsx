@@ -22,7 +22,7 @@ const OrderItem = ({ order }: Props) => {
         style={styles.productInfo}
         key={order.product._id}
         onPress={() =>
-          navigation.navigate(navigationNames.productProfileScreenTab, {
+          navigation.navigate(navigationNames.productScreen, {
             id: order.product._id,
           })
         }

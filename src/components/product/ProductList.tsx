@@ -6,18 +6,13 @@ import ProductItem from './ProductItem';
 
 interface Props {
   products: Product[];
-  routeName: string;
 }
 
-const ProductList: React.FC<Props> = ({ products, routeName }) => {
+const ProductList: React.FC<Props> = ({ products }) => {
   return (
     <View style={styles.products}>
       {products.map((product) => (
-        <ProductItem
-          routeName={routeName}
-          product={product}
-          key={product._id}
-        />
+        <ProductItem product={product} key={product._id} />
       ))}
     </View>
   );

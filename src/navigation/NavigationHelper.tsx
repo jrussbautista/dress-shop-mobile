@@ -13,8 +13,8 @@ const getTabTitle = (routeName: string): string => {
       return 'Search';
     case navigationNames.profileTab:
       return 'Profile';
-    case navigationNames.cartTab:
-      return 'Cart';
+    case navigationNames.wishlistTab:
+      return 'Wishlist';
     default:
       return '';
   }
@@ -34,8 +34,8 @@ export const tabScreenOptions: (props: {
       case navigationNames.searchTab:
         iconName = 'ios-search';
         break;
-      case navigationNames.cartTab:
-        iconName = 'ios-cart';
+      case navigationNames.wishlistTab:
+        iconName = 'ios-heart';
         break;
       case navigationNames.profileTab:
         iconName = 'md-person';

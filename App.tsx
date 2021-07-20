@@ -1,4 +1,9 @@
-import { AuthProvider, CartProvider, ToastProvider } from '@/contexts';
+import {
+  AuthProvider,
+  CartProvider,
+  ToastProvider,
+  WishlistProvider,
+} from '@/contexts';
 import { AppNavigation } from '@/navigation';
 import React from 'react';
 
@@ -8,7 +13,9 @@ export default function App() {
       <ToastProvider>
         <AuthProvider>
           <CartProvider>
-            <AppNavigation />
+            <WishlistProvider>
+              <AppNavigation />
+            </WishlistProvider>
           </CartProvider>
         </AuthProvider>
       </ToastProvider>
